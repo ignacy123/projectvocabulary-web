@@ -25,7 +25,7 @@ public class JaxbLearningTest {
         Marshaller marshaller = context.createMarshaller();
         marshaller.marshal(testEntity, stringWriter);
 
-        String expectedXml = "<testEntity><field>asdf</field><numField>100</numField></testEntity>";
+        String expectedXml = "<testEntity><field>asdf</field><numField>100</numField> </testEntity>";
 
         assertThat(stringWriter.toString(), isIdenticalTo(expectedXml).ignoreWhitespace());
     }

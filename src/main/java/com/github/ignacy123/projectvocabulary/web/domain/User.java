@@ -1,12 +1,19 @@
 package com.github.ignacy123.projectvocabulary.web.domain;
 
+import javax.xml.bind.annotation.*;
+
 /**
  * Created by ignacy on 19.05.16.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class User {
+    @XmlAttribute
     private Long id;
+    @XmlAttribute
     private String login;
+    @XmlAttribute
     private String password;
+    @XmlAttribute
     private String email;
 
     public Long getId() {

@@ -30,6 +30,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile 'nekohtml:nekohtml:1.9.6.2'
+	compile 'commons-io:commons-io:2.5'
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 

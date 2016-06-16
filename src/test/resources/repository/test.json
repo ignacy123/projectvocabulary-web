@@ -1,0 +1,14 @@
+{
+  "animals":[
+    {
+      "type": "lion" ,
+      "name": "mufasa"
+    },
+    {
+      "type": "zebra",
+      "name": "kazimierz"
+    }
+  ]
+
+
+}

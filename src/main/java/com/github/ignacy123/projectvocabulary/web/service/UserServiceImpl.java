@@ -1,7 +1,7 @@
 package com.github.ignacy123.projectvocabulary.web.service;
 
 import com.github.ignacy123.projectvocabulary.web.domain.User;
-import com.github.ignacy123.projectvocabulary.web.domain.UserRepositoryImpl;
+import com.github.ignacy123.projectvocabulary.web.repository.UserXmlRepository;
 import com.github.ignacy123.projectvocabulary.web.dto.RegistrationDto;
 
 /**
@@ -9,7 +9,7 @@ import com.github.ignacy123.projectvocabulary.web.dto.RegistrationDto;
  */
 public class UserServiceImpl implements UserService {
 
-    UserRepositoryImpl userRepository = new UserRepositoryImpl();
+    UserXmlRepository userRepository = new UserXmlRepository(null);
     private Long idCounter = 1L;
     public User register(RegistrationDto dto) {
         User user = new User();
@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
         user.setLogin(dto.getLogin());
         user.setPassword(dto.getPassword());
         user.setEmail(dto.getEmail());
-        userRepository.add(user);
+        userRepository.save(user);
         return user;
     }
 
