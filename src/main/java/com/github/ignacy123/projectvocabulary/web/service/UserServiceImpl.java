@@ -3,18 +3,25 @@ package com.github.ignacy123.projectvocabulary.web.service;
 import com.github.ignacy123.projectvocabulary.web.domain.User;
 import com.github.ignacy123.projectvocabulary.web.repository.UserXmlRepository;
 import com.github.ignacy123.projectvocabulary.web.dto.RegistrationDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by ignacy on 19.05.16.
  */
+@Service
 public class UserServiceImpl implements UserService {
 
-    UserXmlRepository userRepository = new UserXmlRepository(null);
-    private Long idCounter = 1L;
+    private final UserXmlRepository userRepository;
+
+
+    @Autowired
+    public UserServiceImpl(UserXmlRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     public User register(RegistrationDto dto) {
         User user = new User();
-        user.setId(idCounter);
-        idCounter++;
         user.setLogin(dto.getLogin());
         user.setPassword(dto.getPassword());
         user.setEmail(dto.getEmail());

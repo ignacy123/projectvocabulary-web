@@ -8,8 +8,11 @@ import com.github.ignacy123.projectvocabulary.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +30,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/register")
     @ResponseBody
-    public User register(@RequestBody RegistrationDto dto) {
+    public User register(@RequestBody @Valid RegistrationDto dto) {
         return userService.register(dto);
     }
 
@@ -50,6 +53,18 @@ public class UserController {
         e.printStackTrace();
         ErrorDto errorDto = new ErrorDto();
         errorDto.setMessage(e.getMessage());
+        return errorDto;
+    }
+
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorDto handleException(MethodArgumentNotValidException e) {
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setMessage("Validation failed");
+        for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
+            errorDto.getErrors().put(fieldError.getField(), fieldError.getDefaultMessage());
+        }
         return errorDto;
     }
 }

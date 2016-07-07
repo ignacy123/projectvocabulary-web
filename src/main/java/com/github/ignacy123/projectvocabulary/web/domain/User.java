@@ -1,5 +1,7 @@
 package com.github.ignacy123.projectvocabulary.web.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.xml.bind.annotation.*;
 
 /**
@@ -12,6 +14,7 @@ public class User {
     @XmlAttribute
     private String login;
     @XmlAttribute
+    @JsonIgnore
     private String password;
     @XmlAttribute
     private String email;

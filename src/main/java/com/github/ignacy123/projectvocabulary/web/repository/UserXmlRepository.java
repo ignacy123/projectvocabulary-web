@@ -2,49 +2,71 @@ package com.github.ignacy123.projectvocabulary.web.repository;
 
 import com.github.ignacy123.projectvocabulary.web.domain.User;
 import com.github.ignacy123.projectvocabulary.web.dto.UserNotFoundException;
-import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by ignacy on 19.05.16.
  */
+@Repository
 public class UserXmlRepository implements UserRepository {
-    private ArrayList<User> userRepository;
     private final File repositoryFile;
     Users users = new Users();
 
 
     public UserXmlRepository(File repositoryFile) {
         this.repositoryFile = repositoryFile;
+        loadUsers();
     }
-//    private File userData = new File("/home/IdeaProjects/userrep", "rep", ".txt");
-//    ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(userData));
+
+
+    @Autowired
+    public UserXmlRepository(@Value("${projectvocabulary.usersRepositoryFile}") String repositoryFilePath) {
+        this(new File(repositoryFilePath));
+    }
 
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         try {
-            user.setId(users.getUsers().size()+1L);
+            user.setId(getMaxId() + 1L);
+
             users.getUsers().add(user);
             JAXBContext context = JAXBContext.newInstance(Users.class, User.class);
             Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(users, repositoryFile);
+            return user;
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    private Long getMaxId() {
+        Long maxId = 0L;
+        for (User user : users.getUsers()) {
+            maxId = Math.max(user.getId(), maxId);
+        }
+        return maxId;
+    }
+
     @Override
     public User findByEmail(String email) {
-        for (User user : userRepository) {
+        for (User user : users.getUsers()) {
             if (user.getEmail().equals(email)) {
                 return user;
             }
@@ -54,7 +76,7 @@ public class UserXmlRepository implements UserRepository {
 
     @Override
     public User findById(Long id) {
-        for (User user : userRepository) {
+        for (User user : users.getUsers()) {
             if (user.getId().equals(id)) {
                 return user;
             }
@@ -62,13 +84,23 @@ public class UserXmlRepository implements UserRepository {
         throw new UserNotFoundException("unknown id");
     }
 
+
     @Override
-    public void saveToFile(User user) {
-//        outputStream.writeObject(user);
-//        outputStream.flush();
-//        outputStream.close();
+    public List<User> findAll() {
+        return users.getUsers();
+    }
+
+    private void loadUsers() {
+        try {
+            JAXBContext context = JAXBContext.newInstance(Users.class, User.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            this.users = (Users) unmarshaller.unmarshal(repositoryFile);
+        } catch (JAXBException e) {
+            throw new InvalidRepositoryFileException(e);
+        }
 
     }
+
 
     @XmlRootElement(name = "users")
     @XmlAccessorType(XmlAccessType.FIELD)

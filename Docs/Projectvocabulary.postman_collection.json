@@ -1,0 +1,31 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Projectvocabulary",
+		"_postman_id": "a5fcad2f-4093-6d91-3df2-e27be0ff9dc3",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8080/projectvocabulary/register",
+			"request": {
+				"url": "localhost:8080/projectvocabulary/register",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"janusz@example.com\",\n  \"password\": \"1234567\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

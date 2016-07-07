@@ -2,21 +2,18 @@ package com.github.ignacy123.projectvocabulary.web.repository;
 
 import com.github.ignacy123.projectvocabulary.web.domain.User;
 
+import java.util.List;
+
 /**
  * Created by ignacy on 19.05.16.
  */
 public interface UserRepository {
-    UserXmlRepository INSTANCE = new UserXmlRepository(null);
-
-    void save(User user);
-
-    static UserXmlRepository getInstance() {
-        return INSTANCE;
-    }
+    User save(User user);
 
     User findByEmail(String email);
 
     User findById(Long id);
 
-    void saveToFile(User user);
+    List<User> findAll();
+
 }
