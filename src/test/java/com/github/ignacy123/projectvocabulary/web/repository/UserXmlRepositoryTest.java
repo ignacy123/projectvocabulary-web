@@ -15,7 +15,6 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.junit.Assert.assertThat;
 import static org.xmlunit.matchers.CompareMatcher.isIdenticalTo;
@@ -39,7 +38,7 @@ public class UserXmlRepositoryTest {
         user.setPassword("1234567");
         repository.save(user);
         String expectedXml = "<users>\n" +
-                "    <user id=\"1\" login=\"janusz\" email=\"janusz@example.com\" password=\"1234567\"/>\n" +
+                "    <user id=\"1\" login=\"janusz\" email=\"janusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
                 "</users>";
 
         assertRepositoryXml(expectedXml);
@@ -59,8 +58,8 @@ public class UserXmlRepositoryTest {
         repository.save(janusz);
         repository.save(mariusz);
         String expectedXml = "<users>\n" +
-                "    <user id=\"1\" login=\"janusz\" email=\"janusz@example.com\" password=\"1234567\"/>\n" +
-                "    <user id=\"2\" login=\"mariusz\" email=\"mariusz@example.com\" password=\"1234567\"/>\n" +
+                "    <user id=\"1\" login=\"janusz\" email=\"janusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
+                "    <user id=\"2\" login=\"mariusz\" email=\"mariusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
                 "</users>";
 
         assertRepositoryXml(expectedXml);
@@ -84,6 +83,17 @@ public class UserXmlRepositoryTest {
         assertThat(user.getEmail(), is("janusz@example.com"));
         assertThat(user.getLogin(), is("janusz"));
 
+    }
+
+    @Test(expected = NotUniqueEmailException.class)
+
+    public void testSaveThrowsWhenEmailNotUnique() throws Exception {
+        prepareRepository("/repository/standardRepository.xml");
+        User janusz = new User();
+        janusz.setEmail("janusz@example.com");
+        janusz.setLogin("janusz");
+        janusz.setPassword("1234567");
+        repository.save(janusz);
     }
 
     private void prepareRepository(String resourcePath) throws IOException {
@@ -128,11 +138,12 @@ public class UserXmlRepositoryTest {
         janusz = repository.save(janusz);
         assertThat(janusz.getId(), is(1L));
         String expectedXml = "<users>\n" +
-                "    <user id=\"1\" login=\"janusz\" email=\"janusz@example.com\" password=\"1234567\"/>\n" +
+                "    <user id=\"1\" login=\"janusz\" email=\"janusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
                 "</users>";
         assertRepositoryXml(expectedXml);
 
     }
+
     private void assertRepositoryXml(String expectedXml) throws IOException {
         String repositoryXml = FileUtils.readFileToString(repositoryFile, "UTF-8");
         assertThat(repositoryXml, isIdenticalTo(expectedXml).ignoreWhitespace());
@@ -149,9 +160,9 @@ public class UserXmlRepositoryTest {
         janusz = repository.save(janusz);
         assertThat(janusz.getId(), is(3L));
         String expectedXml = "<users>\n" +
-                "    <user id=\"1\" login=\"janusz\" email=\"janusz@example.com\" password=\"1234567\"/>\n" +
-                "    <user id=\"2\" login=\"mariusz\" email=\"mariusz@example.com\" password=\"1234567\"/>\n" +
-                "    <user id=\"3\" login=\"janusz2\" email=\"janusz2@example.com\" password=\"1234567\"/>\n" +
+                "    <user id=\"1\" login=\"janusz\" email=\"janusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
+                "    <user id=\"2\" login=\"mariusz\" email=\"mariusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
+                "    <user id=\"3\" login=\"janusz2\" email=\"janusz2@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
                 "</users>";
         assertRepositoryXml(expectedXml);
 

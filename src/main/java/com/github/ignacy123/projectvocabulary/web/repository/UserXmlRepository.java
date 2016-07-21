@@ -41,6 +41,7 @@ public class UserXmlRepository implements UserRepository {
 
     @Override
     public User save(User user) {
+        checkEmailUnique(user.getEmail());
         try {
             user.setId(getMaxId() + 1L);
 
@@ -72,6 +73,14 @@ public class UserXmlRepository implements UserRepository {
             }
         }
         throw new UserNotFoundException("unknown email");
+    }
+
+    public void checkEmailUnique(String email) {
+        for (User user : users.getUsers()) {
+            if (user.getEmail().equals(email)) {
+                throw new NotUniqueEmailException("email not unique");
+            }
+        }
     }
 
     @Override

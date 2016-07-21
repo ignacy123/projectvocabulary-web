@@ -2,9 +2,12 @@ package com.github.ignacy123.projectvocabulary.web.controller;
 
 import com.github.ignacy123.projectvocabulary.web.domain.User;
 import com.github.ignacy123.projectvocabulary.web.dto.ErrorDto;
+import com.github.ignacy123.projectvocabulary.web.dto.LogInDto;
 import com.github.ignacy123.projectvocabulary.web.dto.RegistrationDto;
 import com.github.ignacy123.projectvocabulary.web.dto.UserNotFoundException;
+import com.github.ignacy123.projectvocabulary.web.repository.NotUniqueEmailException;
 import com.github.ignacy123.projectvocabulary.web.service.UserService;
+import com.github.ignacy123.projectvocabulary.web.service.WrongCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -13,8 +16,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by ignacy on 19.05.16.
@@ -32,6 +33,12 @@ public class UserController {
     @ResponseBody
     public User register(@RequestBody @Valid RegistrationDto dto) {
         return userService.register(dto);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/login")
+    @ResponseBody
+    public User logIn(@RequestBody @Valid LogInDto dto) {
+        return userService.logIn(dto.getEmail(), dto.getPassword());
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/users")
@@ -57,7 +64,7 @@ public class UserController {
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorDto handleException(MethodArgumentNotValidException e) {
         ErrorDto errorDto = new ErrorDto();
@@ -65,6 +72,26 @@ public class UserController {
         for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
             errorDto.getErrors().put(fieldError.getField(), fieldError.getDefaultMessage());
         }
+        return errorDto;
+    }
+
+    @ExceptionHandler(value = NotUniqueEmailException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorDto handleException(NotUniqueEmailException e) {
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setMessage("Validation failed");
+            errorDto.getErrors().put("email", "email is not unique");
+        return errorDto;
+    }
+
+    @ExceptionHandler(value = WrongCredentialsException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorDto handleException(WrongCredentialsException e) {
+        e.printStackTrace();
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setMessage("Invalid email or password");
         return errorDto;
     }
 }

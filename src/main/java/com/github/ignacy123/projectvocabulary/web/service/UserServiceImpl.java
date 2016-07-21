@@ -1,7 +1,8 @@
 package com.github.ignacy123.projectvocabulary.web.service;
 
 import com.github.ignacy123.projectvocabulary.web.domain.User;
-import com.github.ignacy123.projectvocabulary.web.repository.UserXmlRepository;
+import com.github.ignacy123.projectvocabulary.web.dto.UserNotFoundException;
+import com.github.ignacy123.projectvocabulary.web.repository.UserRepository;
 import com.github.ignacy123.projectvocabulary.web.dto.RegistrationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserXmlRepository userRepository;
+    private final UserRepository userRepository;
 
 
     @Autowired
-    public UserServiceImpl(UserXmlRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -35,5 +36,19 @@ public class UserServiceImpl implements UserService {
 
     public User findById(Long id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    public User logIn(String email, String password) {
+        try {
+            User user = userRepository.findByEmail(email);
+
+            if(user.matchesPassword(password)){
+                return user;
+            }
+        }catch(UserNotFoundException e){
+            throw new WrongCredentialsException();
+        }
+        throw new WrongCredentialsException();
     }
 }

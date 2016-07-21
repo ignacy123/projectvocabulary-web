@@ -10,4 +10,5 @@ public interface UserService {
     User register(RegistrationDto dto);
     User findByEmail(String email);
     User findById(Long id);
+    User logIn(String email, String password);
 }
