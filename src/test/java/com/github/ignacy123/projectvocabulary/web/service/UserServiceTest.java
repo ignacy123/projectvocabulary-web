@@ -3,9 +3,10 @@ package com.github.ignacy123.projectvocabulary.web.service;
 import com.github.ignacy123.projectvocabulary.web.domain.User;
 import com.github.ignacy123.projectvocabulary.web.dto.UserNotFoundException;
 import com.github.ignacy123.projectvocabulary.web.repository.UserRepository;
-import com.github.ignacy123.projectvocabulary.web.repository.UserXmlRepository;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,16 +20,17 @@ public class UserServiceTest {
     private UserRepository repository;
     private UserServiceImpl service;
     private User mockedUser;
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Before
     public void setUp() throws Exception {
         repository = mock(UserRepository.class);
-        service = new UserServiceImpl(repository);
+        service = new UserServiceImpl(repository, passwordEncoder);
         mockedUser = new User();
         mockedUser.setEmail("janusz@example.com");
         mockedUser.setLogin("janusz");
         mockedUser.setId(1L);
-        mockedUser.setPassword("1234567Aa");
+        mockedUser.setPassword(passwordEncoder, "1234567Aa");
     }
 
     @Test

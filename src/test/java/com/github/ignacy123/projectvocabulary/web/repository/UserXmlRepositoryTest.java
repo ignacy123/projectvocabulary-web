@@ -6,15 +6,15 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.junit.Assert.assertThat;
 import static org.xmlunit.matchers.CompareMatcher.isIdenticalTo;
@@ -28,6 +28,7 @@ public class UserXmlRepositoryTest {
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
     private UserXmlRepository repository;
     private File repositoryFile;
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Test
     public void testSave() throws Exception {
@@ -35,7 +36,7 @@ public class UserXmlRepositoryTest {
         User user = new User();
         user.setEmail("janusz@example.com");
         user.setLogin("janusz");
-        user.setPassword("1234567");
+        user.setPassword(passwordEncoder, "1234567");
         repository.save(user);
         String expectedXml = "<users>\n" +
                 "    <user id=\"1\" login=\"janusz\" email=\"janusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
@@ -50,11 +51,11 @@ public class UserXmlRepositoryTest {
         User janusz = new User();
         janusz.setEmail("janusz@example.com");
         janusz.setLogin("janusz");
-        janusz.setPassword("1234567");
+        janusz.setPassword(passwordEncoder, "1234567");
         User mariusz = new User();
         mariusz.setEmail("mariusz@example.com");
         mariusz.setLogin("mariusz");
-        mariusz.setPassword("1234567");
+        mariusz.setPassword(passwordEncoder, "1234567");
         repository.save(janusz);
         repository.save(mariusz);
         String expectedXml = "<users>\n" +
@@ -92,7 +93,7 @@ public class UserXmlRepositoryTest {
         User janusz = new User();
         janusz.setEmail("janusz@example.com");
         janusz.setLogin("janusz");
-        janusz.setPassword("1234567");
+        janusz.setPassword(passwordEncoder, "1234567");
         repository.save(janusz);
     }
 
@@ -134,7 +135,7 @@ public class UserXmlRepositoryTest {
         User janusz = new User();
         janusz.setEmail("janusz@example.com");
         janusz.setLogin("janusz");
-        janusz.setPassword("1234567");
+        janusz.setPassword(passwordEncoder, "1234567");
         janusz = repository.save(janusz);
         assertThat(janusz.getId(), is(1L));
         String expectedXml = "<users>\n" +
@@ -156,7 +157,7 @@ public class UserXmlRepositoryTest {
         User janusz = new User();
         janusz.setEmail("janusz2@example.com");
         janusz.setLogin("janusz2");
-        janusz.setPassword("1234567");
+        janusz.setPassword(passwordEncoder, "1234567");
         janusz = repository.save(janusz);
         assertThat(janusz.getId(), is(3L));
         String expectedXml = "<users>\n" +

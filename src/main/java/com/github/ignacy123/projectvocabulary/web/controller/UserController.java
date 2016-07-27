@@ -86,7 +86,7 @@ public class UserController {
     }
 
     @ExceptionHandler(value = WrongCredentialsException.class)
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorDto handleException(WrongCredentialsException e) {
         e.printStackTrace();

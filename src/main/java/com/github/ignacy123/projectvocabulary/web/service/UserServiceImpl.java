@@ -5,6 +5,7 @@ import com.github.ignacy123.projectvocabulary.web.dto.UserNotFoundException;
 import com.github.ignacy123.projectvocabulary.web.repository.UserRepository;
 import com.github.ignacy123.projectvocabulary.web.dto.RegistrationDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,17 +15,19 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User register(RegistrationDto dto) {
         User user = new User();
         user.setLogin(dto.getLogin());
-        user.setPassword(dto.getPassword());
+        user.setPassword(passwordEncoder, dto.getPassword());
         user.setEmail(dto.getEmail());
         userRepository.save(user);
         return user;
@@ -43,7 +46,7 @@ public class UserServiceImpl implements UserService {
         try {
             User user = userRepository.findByEmail(email);
 
-            if(user.matchesPassword(password)){
+            if(user.matchesPassword(passwordEncoder, password)){
                 return user;
             }
         }catch(UserNotFoundException e){

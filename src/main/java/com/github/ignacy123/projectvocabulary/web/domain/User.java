@@ -1,18 +1,23 @@
 package com.github.ignacy123.projectvocabulary.web.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.xml.bind.annotation.*;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
 import java.util.Formatter;
 
 /**
  * Created by ignacy on 19.05.16.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class User {
+public class User implements UserDetails {
     @XmlAttribute
     private Long id;
     @XmlAttribute
@@ -39,8 +44,8 @@ public class User {
         this.login = login;
     }
 
-    public void setPassword(String password) {
-        this.password = computeHash(password);
+    public void setPassword(PasswordEncoder encoder, String password) {
+        this.password = encoder.encode(password);
     }
 
     public String getEmail() {
@@ -77,8 +82,42 @@ public class User {
 
     }
 
-    public boolean matchesPassword(String password) {
-        String hash = computeHash(password);
-        return this.password.equals(hash);
+    public boolean matchesPassword(PasswordEncoder encoder, String password) {
+        return encoder.matches(password, this.password);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return AuthorityUtils.createAuthorityList("ROLE_USER");
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
