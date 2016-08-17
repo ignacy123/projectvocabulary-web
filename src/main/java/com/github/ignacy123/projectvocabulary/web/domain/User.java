@@ -21,12 +21,16 @@ public class User implements UserDetails {
     @XmlAttribute
     private Long id;
     @XmlAttribute
-    private String login;
+    private String email;
     @XmlAttribute
     @JsonIgnore
     private String password;
     @XmlAttribute
-    private String email;
+    private String firstName;
+    @XmlAttribute
+    private String lastName;
+
+
 
     public Long getId() {
         return id;
@@ -36,24 +40,33 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public void setPassword(PasswordEncoder encoder, String password) {
-        this.password = encoder.encode(password);
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+
+    public void setPassword(PasswordEncoder encoder, String password) {
+        this.password = encoder.encode(password);
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public static String computeHash(String str) {

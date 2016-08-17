@@ -1,0 +1,8 @@
+<users>
+    <user id="1"
+          email="janusz@example.com"
+          password="20eabe5d64b0e216796e834f52d61fd0b70332fc"
+          firstName="janusz"
+          lastName="kowalski"
+    />
+</users>

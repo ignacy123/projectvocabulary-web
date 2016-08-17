@@ -21,7 +21,87 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"email\": \"janusz@example.com\",\n  \"password\": \"1234567\"\n}"
+					"raw": "{\n  \"firstName\": \"janusz\",\n  \"lastName\": \"kowalski\",\n  \"email\": \"janusz@example4.com\",\n  \"password\": \"1234567Aa\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/projectvocabulary/dictionary/session",
+			"request": {
+				"url": "localhost:8080/projectvocabulary/dictionary/session",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"size\": 20\n  }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"url": "localhost:8080/projectvocabulary/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"janusz@example.com\",\n  \"password\": \"1234567Aa\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get user data",
+			"request": {
+				"url": "localhost:8080/projectvocabulary/users/1",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"janusz@example.com\",\n  \"password\": \"1234567Aa\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"url": "localhost:8080/projectvocabulary/logout",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"janusz@example.com\",\n  \"password\": \"1234567Aa\"\n}"
 				},
 				"description": ""
 			},

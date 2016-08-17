@@ -17,6 +17,8 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.xmlunit.matchers.CompareMatcher.isIdenticalTo;
 
 /**
@@ -28,39 +30,37 @@ public class UserXmlRepositoryTest {
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
     private UserXmlRepository repository;
     private File repositoryFile;
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
 
     @Test
     public void testSave() throws Exception {
+        when(passwordEncoder.encode("1234567")).thenReturn("20eabe5d64b0e216796e834f52d61fd0b70332fc");
         prepareRepository("/repository/emptyRepositoryFile.xml");
         User user = new User();
         user.setEmail("janusz@example.com");
-        user.setLogin("janusz");
         user.setPassword(passwordEncoder, "1234567");
+        user.setFirstName("janusz");
+        user.setLastName("kowalski");
         repository.save(user);
-        String expectedXml = "<users>\n" +
-                "    <user id=\"1\" login=\"janusz\" email=\"janusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
-                "</users>";
 
-        assertRepositoryXml(expectedXml);
+        assertRepositoryXmlWithResource("/repository/testSave_out.xml");
     }
 
     @Test
     public void testSaveTwo() throws Exception {
+        when(passwordEncoder.encode("1234567")).thenReturn("20eabe5d64b0e216796e834f52d61fd0b70332fc");
         prepareRepository("/repository/emptyRepositoryFile.xml");
         User janusz = new User();
         janusz.setEmail("janusz@example.com");
-        janusz.setLogin("janusz");
         janusz.setPassword(passwordEncoder, "1234567");
         User mariusz = new User();
         mariusz.setEmail("mariusz@example.com");
-        mariusz.setLogin("mariusz");
         mariusz.setPassword(passwordEncoder, "1234567");
         repository.save(janusz);
         repository.save(mariusz);
         String expectedXml = "<users>\n" +
-                "    <user id=\"1\" login=\"janusz\" email=\"janusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
-                "    <user id=\"2\" login=\"mariusz\" email=\"mariusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
+                "    <user id=\"1\" email=\"janusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
+                "    <user id=\"2\" email=\"mariusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
                 "</users>";
 
         assertRepositoryXml(expectedXml);
@@ -72,7 +72,6 @@ public class UserXmlRepositoryTest {
         User user = repository.findById(1L);
         assertThat(user.getId(), is(1L));
         assertThat(user.getEmail(), is("janusz@example.com"));
-        assertThat(user.getLogin(), is("janusz"));
 
     }
 
@@ -82,7 +81,6 @@ public class UserXmlRepositoryTest {
         User user = repository.findById(1L);
         assertThat(user.getId(), is(1L));
         assertThat(user.getEmail(), is("janusz@example.com"));
-        assertThat(user.getLogin(), is("janusz"));
 
     }
 
@@ -92,7 +90,6 @@ public class UserXmlRepositoryTest {
         prepareRepository("/repository/standardRepository.xml");
         User janusz = new User();
         janusz.setEmail("janusz@example.com");
-        janusz.setLogin("janusz");
         janusz.setPassword(passwordEncoder, "1234567");
         repository.save(janusz);
     }
@@ -119,27 +116,25 @@ public class UserXmlRepositoryTest {
         assertThat(users.size(), is(2));
         assertThat(users, hasItem(allOf(
                 hasProperty("id", is(1L)),
-                hasProperty("login", is("janusz")),
                 hasProperty("email", is("janusz@example.com"))
         )));
         assertThat(users, hasItem(allOf(
                 hasProperty("id", is(2L)),
-                hasProperty("login", is("mariusz")),
                 hasProperty("email", is("mariusz@example.com"))
         )));
     }
 
     @Test
     public void testFirstIdIs1() throws Exception {
+        when(passwordEncoder.encode("1234567")).thenReturn("20eabe5d64b0e216796e834f52d61fd0b70332fc");
         prepareRepository("/repository/emptyRepositoryFile.xml");
         User janusz = new User();
         janusz.setEmail("janusz@example.com");
-        janusz.setLogin("janusz");
         janusz.setPassword(passwordEncoder, "1234567");
         janusz = repository.save(janusz);
         assertThat(janusz.getId(), is(1L));
         String expectedXml = "<users>\n" +
-                "    <user id=\"1\" login=\"janusz\" email=\"janusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
+                "    <user id=\"1\" email=\"janusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
                 "</users>";
         assertRepositoryXml(expectedXml);
 
@@ -148,22 +143,26 @@ public class UserXmlRepositoryTest {
     private void assertRepositoryXml(String expectedXml) throws IOException {
         String repositoryXml = FileUtils.readFileToString(repositoryFile, "UTF-8");
         assertThat(repositoryXml, isIdenticalTo(expectedXml).ignoreWhitespace());
+    }
 
+    private void assertRepositoryXmlWithResource(String resourcePath) throws IOException {
+        String expectedXml = IOUtils.toString(getClass().getResource(resourcePath), "UTF-8");
+        assertRepositoryXml(expectedXml);
     }
 
     @Test
     public void thirdIdIs3() throws Exception {
+        when(passwordEncoder.encode("1234567")).thenReturn("20eabe5d64b0e216796e834f52d61fd0b70332fc");
         prepareRepository("/repository/standardRepository.xml");
         User janusz = new User();
         janusz.setEmail("janusz2@example.com");
-        janusz.setLogin("janusz2");
         janusz.setPassword(passwordEncoder, "1234567");
         janusz = repository.save(janusz);
         assertThat(janusz.getId(), is(3L));
         String expectedXml = "<users>\n" +
-                "    <user id=\"1\" login=\"janusz\" email=\"janusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
-                "    <user id=\"2\" login=\"mariusz\" email=\"mariusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
-                "    <user id=\"3\" login=\"janusz2\" email=\"janusz2@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
+                "    <user id=\"1\" email=\"janusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
+                "    <user id=\"2\" email=\"mariusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
+                "    <user id=\"3\" email=\"janusz2@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
                 "</users>";
         assertRepositoryXml(expectedXml);
 

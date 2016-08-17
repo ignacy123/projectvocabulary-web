@@ -26,15 +26,16 @@ public class UserServiceImpl implements UserService {
 
     public User register(RegistrationDto dto) {
         User user = new User();
-        user.setLogin(dto.getLogin());
         user.setPassword(passwordEncoder, dto.getPassword());
         user.setEmail(dto.getEmail());
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
         userRepository.save(user);
         return user;
     }
 
     public User findByEmail(String email) {
-       return  userRepository.findByEmail(email);
+        return userRepository.findByEmail(email);
     }
 
     public User findById(Long id) {
@@ -46,10 +47,10 @@ public class UserServiceImpl implements UserService {
         try {
             User user = userRepository.findByEmail(email);
 
-            if(user.matchesPassword(passwordEncoder, password)){
+            if (user.matchesPassword(passwordEncoder, password)) {
                 return user;
             }
-        }catch(UserNotFoundException e){
+        } catch (UserNotFoundException e) {
             throw new WrongCredentialsException();
         }
         throw new WrongCredentialsException();
