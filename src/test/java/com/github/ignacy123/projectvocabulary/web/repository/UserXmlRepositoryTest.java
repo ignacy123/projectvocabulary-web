@@ -160,11 +160,22 @@ public class UserXmlRepositoryTest {
         janusz = repository.save(janusz);
         assertThat(janusz.getId(), is(3L));
         String expectedXml = "<users>\n" +
-                "    <user id=\"1\" email=\"janusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
-                "    <user id=\"2\" email=\"mariusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
+                "    <user id=\"1\" email=\"janusz@example.com\" firstName=\"Janusz\" lastName=\"Kowalski\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
+                "    <user id=\"2\" email=\"mariusz@example.com\" firstName=\"Mariusz\" lastName=\"Nowak\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
                 "    <user id=\"3\" email=\"janusz2@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
                 "</users>";
         assertRepositoryXml(expectedXml);
+
+    }
+
+    @Test
+    public void testPersist() throws Exception {
+        prepareRepository("/repository/standardRepository.xml");
+        User user = repository.findById(1L);
+        user.setEmail("damian@example.com");
+        user.setFirstName("Damian");
+        repository.persist();
+        assertRepositoryXmlWithResource("/repository/testPersist_out.xml");
 
     }
 }

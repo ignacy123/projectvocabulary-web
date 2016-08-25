@@ -1,5 +1,6 @@
 package com.github.ignacy123.projectvocabulary.web.dto;
 
+import com.github.ignacy123.projectvocabulary.web.domain.User;
 import com.github.ignacy123.projectvocabulary.web.validation.StrongPassword;
 import org.hibernate.validator.constraints.Email;
 
@@ -19,6 +20,8 @@ public class RegistrationDto {
     private String email;
     private String lastName;
     private String firstName;
+    @NotNull(message =  "This field is required.")
+    private User.Type type;
 
     public String getPassword() {
         return password;
@@ -50,5 +53,13 @@ public class RegistrationDto {
 
     public String getFirstName() {
         return firstName;
+    }
+
+    public User.Type getType() {
+        return type;
+    }
+
+    public void setType(User.Type type) {
+        this.type = type;
     }
 }

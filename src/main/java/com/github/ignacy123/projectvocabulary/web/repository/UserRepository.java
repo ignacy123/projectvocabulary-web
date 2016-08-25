@@ -10,6 +10,8 @@ import java.util.List;
 public interface UserRepository {
     User save(User user);
 
+    void persist();
+
     User findByEmail(String email);
 
     User findById(Long id);

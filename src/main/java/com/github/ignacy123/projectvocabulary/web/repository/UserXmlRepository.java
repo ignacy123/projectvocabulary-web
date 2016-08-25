@@ -42,20 +42,25 @@ public class UserXmlRepository implements UserRepository {
     @Override
     public User save(User user) {
         checkEmailUnique(user.getEmail());
-        try {
-            user.setId(getMaxId() + 1L);
+        user.setId(getMaxId() + 1L);
+        users.getUsers().add(user);
+        persist();
+        return user;
+    }
 
-            users.getUsers().add(user);
+    @Override
+    public void persist() {
+        try {
             JAXBContext context = JAXBContext.newInstance(Users.class, User.class);
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(users, repositoryFile);
-            return user;
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (JAXBException e) {
+            throw new RuntimeException("Couldn't persist repository", e);
         }
+
     }
+
 
     private Long getMaxId() {
         Long maxId = 0L;

@@ -1,10 +1,7 @@
 package com.github.ignacy123.projectvocabulary.web.controller;
 
 import com.github.ignacy123.projectvocabulary.web.domain.User;
-import com.github.ignacy123.projectvocabulary.web.dto.ErrorDto;
-import com.github.ignacy123.projectvocabulary.web.dto.LogInDto;
-import com.github.ignacy123.projectvocabulary.web.dto.RegistrationDto;
-import com.github.ignacy123.projectvocabulary.web.dto.UserNotFoundException;
+import com.github.ignacy123.projectvocabulary.web.dto.*;
 import com.github.ignacy123.projectvocabulary.web.repository.NotUniqueEmailException;
 import com.github.ignacy123.projectvocabulary.web.service.UserService;
 import com.github.ignacy123.projectvocabulary.web.service.WrongCredentialsException;
@@ -41,16 +38,16 @@ public class UserController {
         return userService.logIn(dto.getEmail(), dto.getPassword());
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/users")
-    @ResponseBody
-    public User findByEmail(@RequestParam String email) {
-        return userService.findByEmail(email);
-    }
-
     @RequestMapping(method = RequestMethod.GET, value = "/users/{id}")
     @ResponseBody
     public User findById(@PathVariable Long id) {
         return userService.findById(id);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}")
+    @ResponseBody
+    public User updateUser(@PathVariable Long id, @RequestBody UserUpdateDto updateDto) {
+        return userService.updateUser(id, updateDto);
     }
 
     @ExceptionHandler(value = UserNotFoundException.class)
@@ -81,7 +78,7 @@ public class UserController {
     public ErrorDto handleException(NotUniqueEmailException e) {
         ErrorDto errorDto = new ErrorDto();
         errorDto.setMessage("Validation failed");
-            errorDto.getErrors().put("email", "email is not unique");
+        errorDto.getErrors().put("email", "email is not unique");
         return errorDto;
     }
 

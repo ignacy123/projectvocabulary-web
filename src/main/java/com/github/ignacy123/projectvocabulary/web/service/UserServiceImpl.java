@@ -2,6 +2,7 @@ package com.github.ignacy123.projectvocabulary.web.service;
 
 import com.github.ignacy123.projectvocabulary.web.domain.User;
 import com.github.ignacy123.projectvocabulary.web.dto.UserNotFoundException;
+import com.github.ignacy123.projectvocabulary.web.dto.UserUpdateDto;
 import com.github.ignacy123.projectvocabulary.web.repository.UserRepository;
 import com.github.ignacy123.projectvocabulary.web.dto.RegistrationDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +31,11 @@ public class UserServiceImpl implements UserService {
         user.setEmail(dto.getEmail());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
+        user.setType(dto.getType());
         userRepository.save(user);
         return user;
     }
 
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
 
     public User findById(Long id) {
         return userRepository.findById(id);
@@ -54,5 +53,15 @@ public class UserServiceImpl implements UserService {
             throw new WrongCredentialsException();
         }
         throw new WrongCredentialsException();
+    }
+
+    @Override
+    public User updateUser(Long id, UserUpdateDto updateDto) {
+        User user = findById(id);
+        user.setEmail(updateDto.getEmail());
+        user.setFirstName(updateDto.getFirstName());
+        user.setLastName(updateDto.getLastName());
+        userRepository.persist();
+        return user;
     }
 }

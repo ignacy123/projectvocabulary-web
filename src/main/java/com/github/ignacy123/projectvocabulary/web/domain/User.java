@@ -18,8 +18,14 @@ import java.util.Formatter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class User implements UserDetails {
+    public enum Type {
+        STUDENT, TEACHER;
+    }
+
     @XmlAttribute
     private Long id;
+    @XmlAttribute
+    private Type type;
     @XmlAttribute
     private String email;
     @XmlAttribute
@@ -31,13 +37,20 @@ public class User implements UserDetails {
     private String lastName;
 
 
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public String getEmail() {
