@@ -51,16 +51,20 @@ public class UserXmlRepositoryTest {
         when(passwordEncoder.encode("1234567")).thenReturn("20eabe5d64b0e216796e834f52d61fd0b70332fc");
         prepareRepository("/repository/emptyRepositoryFile.xml");
         User janusz = new User();
+        janusz.setFirstName("Janusz");
+        janusz.setLastName("Kowalski");
         janusz.setEmail("janusz@example.com");
         janusz.setPassword(passwordEncoder, "1234567");
         User mariusz = new User();
+        mariusz.setFirstName("Mariusz");
+        mariusz.setLastName("Nowak");
         mariusz.setEmail("mariusz@example.com");
         mariusz.setPassword(passwordEncoder, "1234567");
         repository.save(janusz);
         repository.save(mariusz);
         String expectedXml = "<users>\n" +
-                "    <user id=\"1\" email=\"janusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
-                "    <user id=\"2\" email=\"mariusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
+                "    <user id=\"1\" firstName=\"Janusz\" lastName=\"Kowalski\" email=\"janusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
+                "    <user id=\"2\" firstName=\"Mariusz\" lastName=\"Nowak\" email=\"mariusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
                 "</users>";
 
         assertRepositoryXml(expectedXml);
@@ -129,12 +133,14 @@ public class UserXmlRepositoryTest {
         when(passwordEncoder.encode("1234567")).thenReturn("20eabe5d64b0e216796e834f52d61fd0b70332fc");
         prepareRepository("/repository/emptyRepositoryFile.xml");
         User janusz = new User();
+        janusz.setFirstName("Janusz");
+        janusz.setLastName("Kowalski");
         janusz.setEmail("janusz@example.com");
         janusz.setPassword(passwordEncoder, "1234567");
         janusz = repository.save(janusz);
         assertThat(janusz.getId(), is(1L));
         String expectedXml = "<users>\n" +
-                "    <user id=\"1\" email=\"janusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
+                "    <user id=\"1\" firstName=\"Janusz\" lastName=\"Kowalski\" email=\"janusz@example.com\" password=\"20eabe5d64b0e216796e834f52d61fd0b70332fc\"/>\n" +
                 "</users>";
         assertRepositoryXml(expectedXml);
 
