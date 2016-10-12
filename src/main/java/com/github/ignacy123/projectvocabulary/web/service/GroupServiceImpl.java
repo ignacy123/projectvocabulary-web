@@ -5,6 +5,8 @@ import com.github.ignacy123.projectvocabulary.web.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by ignacy on 31.08.16.
  */
@@ -19,5 +21,10 @@ public class GroupServiceImpl implements GroupService{
     @Override
     public Group createGroup(Group group) {
         return repository.save(group);
+    }
+
+    @Override
+    public List<Group> getTeacherGroups(Long teacherId) {
+        return repository.findByTeacherId(teacherId);
     }
 }

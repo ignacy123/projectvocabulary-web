@@ -3,10 +3,9 @@ package com.github.ignacy123.projectvocabulary.web.controller;
 import com.github.ignacy123.projectvocabulary.web.domain.Group;
 import com.github.ignacy123.projectvocabulary.web.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Created by ignacy on 31.08.16.
@@ -25,5 +24,12 @@ public class GroupController {
     public Group create(@RequestBody Group group) {
         return service.createGroup(group);
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "")
+    public List<Group> getTeacherGroups(@RequestParam Long teacherId) {
+        return service.getTeacherGroups(teacherId);
+    }
+
+
 
 }

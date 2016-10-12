@@ -17,12 +17,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by ignacy on 31.08.16.
  */
 @Repository
-public class GroupXmlRepository implements GroupRepository{
+public class GroupXmlRepository implements GroupRepository {
 
     private final File repositoryFile;
     private Groups groups;
@@ -32,6 +33,7 @@ public class GroupXmlRepository implements GroupRepository{
         loadGroups();
 
     }
+
     @Autowired
     public GroupXmlRepository(@Value("${projectvocabulary.groupsRepositoryFile}") String repositoryFilePath) {
         this(new File(repositoryFilePath));
@@ -75,6 +77,14 @@ public class GroupXmlRepository implements GroupRepository{
             throw new RuntimeException("Couldn't persist repository", e);
         }
 
+    }
+
+    @Override
+    public List<Group> findByTeacherId(Long teacherId) {
+        return groups.getGroups()
+                .stream()
+                .filter(group -> group.getTeacherId().equals(teacherId))
+                .collect(Collectors.toList());
     }
 
     @XmlRootElement(name = "groups")
