@@ -1,11 +1,14 @@
 package com.github.ignacy123.projectvocabulary.web.controller;
 
 import com.github.ignacy123.projectvocabulary.web.domain.Group;
+import com.github.ignacy123.projectvocabulary.web.domain.Invitation;
+import com.github.ignacy123.projectvocabulary.web.dto.InvitationDto;
 import com.github.ignacy123.projectvocabulary.web.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by ignacy on 31.08.16.
@@ -23,6 +26,11 @@ public class GroupController {
     @RequestMapping(method = RequestMethod.POST, value = "")
     public Group create(@RequestBody Group group) {
         return service.createGroup(group);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/{id}/invitation")
+    public Invitation createInvitation(@PathVariable Long id, @RequestBody InvitationDto dto) {
+        return service.createInvitation(id, dto);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "")
