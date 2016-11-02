@@ -24,13 +24,15 @@ import static org.xmlunit.matchers.CompareMatcher.isIdenticalTo;
 /**
  * Created by ignacy on 16.06.16.
  */
-public class UserXmlRepositoryTest {
+public class UserXmlRepositoryTest extends RepositoryTest {
 
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
     private UserXmlRepository repository;
-    private File repositoryFile;
     private PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
+
+    @Override
+    protected void createRepository() {
+        repository = new UserXmlRepository(repositoryFile);
+    }
 
     @Test
     public void testSave() throws Exception {
@@ -98,14 +100,6 @@ public class UserXmlRepositoryTest {
         repository.save(janusz);
     }
 
-    private void prepareRepository(String resourcePath) throws IOException {
-        repositoryFile = temporaryFolder.newFile();
-        InputStream input = getClass().getResourceAsStream(resourcePath);
-        String inputContent = IOUtils.toString(input, "UTF-8");
-        FileUtils.writeStringToFile(repositoryFile, inputContent, "UTF-8");
-        repository = new UserXmlRepository(repositoryFile);
-    }
-
     @Test(expected = InvalidRepositoryFileException.class)
     public void testLoadUsersThrowsWhenEmptyFile() throws Exception {
         File file = temporaryFolder.newFile();
@@ -144,16 +138,6 @@ public class UserXmlRepositoryTest {
                 "</users>";
         assertRepositoryXml(expectedXml);
 
-    }
-
-    private void assertRepositoryXml(String expectedXml) throws IOException {
-        String repositoryXml = FileUtils.readFileToString(repositoryFile, "UTF-8");
-        assertThat(repositoryXml, isIdenticalTo(expectedXml).ignoreWhitespace());
-    }
-
-    private void assertRepositoryXmlWithResource(String resourcePath) throws IOException {
-        String expectedXml = IOUtils.toString(getClass().getResource(resourcePath), "UTF-8");
-        assertRepositoryXml(expectedXml);
     }
 
     @Test

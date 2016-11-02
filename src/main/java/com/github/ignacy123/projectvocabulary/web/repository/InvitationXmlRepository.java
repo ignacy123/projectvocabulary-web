@@ -2,6 +2,7 @@ package com.github.ignacy123.projectvocabulary.web.repository;
 
 import com.github.ignacy123.projectvocabulary.web.domain.Group;
 import com.github.ignacy123.projectvocabulary.web.domain.Invitation;
+import com.github.ignacy123.projectvocabulary.web.dto.InvitationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -68,6 +69,24 @@ public class InvitationXmlRepository implements InvitationRepository {
         } catch (JAXBException e) {
             throw new RuntimeException("Couldn't persist repository", e);
         }
+
+    }
+
+    @Override
+    public Invitation findByUid(String invitationUid) {
+        for(Invitation invitation : invitations.getInvitations()){
+            if(invitation.getUid().equals(invitationUid)){
+                return  invitation;
+            }
+        }
+        throw new InvitationNotFoundException("unknown uid");
+    }
+
+    @Override
+    public void delete(String invitationUid) {
+        Invitation invitationToDelete = findByUid(invitationUid);
+        invitations.getInvitations().remove(invitationToDelete);
+        persist();
 
     }
 

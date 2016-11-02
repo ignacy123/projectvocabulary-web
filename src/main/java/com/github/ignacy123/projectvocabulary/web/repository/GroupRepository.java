@@ -8,10 +8,12 @@ import java.util.List;
  * Created by ignacy on 31.08.16.
  */
 public interface GroupRepository {
-    Group save(Group group);
+    Group createNew(Group group);
 
     void persist();
 
     List<Group> findByTeacherId(Long teacherId);
+
+    Group findById(Long id);
 }
 

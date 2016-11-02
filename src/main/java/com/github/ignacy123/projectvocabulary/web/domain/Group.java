@@ -15,7 +15,7 @@ public class Group {
     private Long teacherId;
     @XmlAttribute
     private String name;
-    private List<User> students = new ArrayList<>();
+    private List<Long> studentIds = new ArrayList<>();
     @XmlAttribute
     private Long id;
 
@@ -27,8 +27,8 @@ public class Group {
         this.teacherId = teacherId;
     }
 
-    public List<User> getStudents() {
-        return students;
+    public List<Long> getStudentIds() {
+        return studentIds;
     }
 
     public String getName() {

@@ -51,7 +51,10 @@ public class GroupXmlRepository implements GroupRepository {
     }
 
     @Override
-    public Group save(Group group) {
+    public Group createNew(Group group) {
+        if (group.getId() != null) {
+            throw new IllegalArgumentException("group already has id");
+        }
         group.setId(getMaxId() + 1L);
         groups.getGroups().add(group);
         persist();
@@ -85,6 +88,16 @@ public class GroupXmlRepository implements GroupRepository {
                 .stream()
                 .filter(group -> group.getTeacherId().equals(teacherId))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Group findById(Long id) {
+        for (Group group : groups.getGroups()) {
+            if (group.getId().equals(id)) {
+                return group;
+            }
+        }
+        throw new RuntimeException("unknwon group id");
     }
 
     @XmlRootElement(name = "groups")

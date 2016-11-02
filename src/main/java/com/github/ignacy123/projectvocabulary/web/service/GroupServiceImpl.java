@@ -2,6 +2,7 @@ package com.github.ignacy123.projectvocabulary.web.service;
 
 import com.github.ignacy123.projectvocabulary.web.domain.Group;
 import com.github.ignacy123.projectvocabulary.web.domain.Invitation;
+import com.github.ignacy123.projectvocabulary.web.dto.InvitationAcceptanceDto;
 import com.github.ignacy123.projectvocabulary.web.dto.InvitationDto;
 import com.github.ignacy123.projectvocabulary.web.repository.GroupRepository;
 import com.github.ignacy123.projectvocabulary.web.repository.InvitationRepository;
@@ -26,7 +27,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group createGroup(Group group) {
-        return repository.save(group);
+        return repository.createNew(group);
     }
 
     @Override
@@ -41,6 +42,16 @@ public class GroupServiceImpl implements GroupService {
         invitation.setEmail(dto.getEmail());
         invitation.setGroupId(groupId);
         return invitationRepository.save(invitation);
+    }
+
+    @Override
+    public void acceptInvitation(InvitationAcceptanceDto acceptanceDto) {
+        Invitation invitation = invitationRepository.findByUid(acceptanceDto.getInvitationUid());
+        Long groupId = invitation.getGroupId();
+        Group group = repository.findById(groupId);
+        group.getStudentIds().add(acceptanceDto.getStudentId());
+        repository.persist();
+        invitationRepository.delete(invitation.getUid());
     }
 
 }

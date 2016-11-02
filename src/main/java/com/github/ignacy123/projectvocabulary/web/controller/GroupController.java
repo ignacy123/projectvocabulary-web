@@ -28,11 +28,6 @@ public class GroupController {
         return service.createGroup(group);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/{id}/invitation")
-    public Invitation createInvitation(@PathVariable Long id, @RequestBody InvitationDto dto) {
-        return service.createInvitation(id, dto);
-    }
-
     @RequestMapping(method = RequestMethod.GET, value = "")
     public List<Group> getTeacherGroups(@RequestParam Long teacherId) {
         return service.getTeacherGroups(teacherId);
