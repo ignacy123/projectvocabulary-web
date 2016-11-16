@@ -1,11 +1,14 @@
 package com.github.ignacy123.projectvocabulary.web.dto;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by ignacy on 26.10.16.
  */
 public class InvitationAcceptanceDto {
+    @NotNull
     private String invitationUid;
-
+    @NotNull
     private Long studentId;
 
     public String getInvitationUid() {

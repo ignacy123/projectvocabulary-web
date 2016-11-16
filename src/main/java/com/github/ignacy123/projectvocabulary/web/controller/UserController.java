@@ -60,18 +60,6 @@ public class UserController {
         return errorDto;
     }
 
-    @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    @ResponseBody
-    public ErrorDto handleException(MethodArgumentNotValidException e) {
-        ErrorDto errorDto = new ErrorDto();
-        errorDto.setMessage("Validation failed");
-        for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
-            errorDto.getErrors().put(fieldError.getField(), fieldError.getDefaultMessage());
-        }
-        return errorDto;
-    }
-
     @ExceptionHandler(value = NotUniqueEmailException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody

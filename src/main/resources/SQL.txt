@@ -1,0 +1,8 @@
+studentRepository.findAll();
+SELECT * FROM `student`;
+studentRepository.findById();
+SELECT * FROM `student` s WHERE s.id = 1;
+studentRepository.findByEmail();
+SELECT * FROM `student` s WHERE s.email = 'janusz@example.com';
+groupRepository.findAll();
+SELECT g.id AS group_id, g.name AS group_name, s.id AS student_id, s.email AS student_email FROM `groups` g INNER JOIN `student_group` sg ON g.id = sg.group_id LEFT JOIN `student` s ON s.id = sg.student_id

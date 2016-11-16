@@ -7,6 +7,7 @@ import com.github.ignacy123.projectvocabulary.web.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ public class InvitationController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/invitations/acceptances")
-    public void acceptInvitation(@RequestBody InvitationAcceptanceDto acceptanceDto){
+    public void acceptInvitation(@RequestBody @Valid InvitationAcceptanceDto acceptanceDto){
         service.acceptInvitation(acceptanceDto);
     }
 }

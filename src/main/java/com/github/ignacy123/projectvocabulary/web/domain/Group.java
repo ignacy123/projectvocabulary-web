@@ -1,8 +1,6 @@
 package com.github.ignacy123.projectvocabulary.web.domain;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +13,8 @@ public class Group {
     private Long teacherId;
     @XmlAttribute
     private String name;
+    @XmlElementWrapper(name = "students")
+    @XmlElement(name = "id")
     private List<Long> studentIds = new ArrayList<>();
     @XmlAttribute
     private Long id;

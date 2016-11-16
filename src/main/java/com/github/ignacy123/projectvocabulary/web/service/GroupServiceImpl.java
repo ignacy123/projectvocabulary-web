@@ -9,6 +9,7 @@ import com.github.ignacy123.projectvocabulary.web.repository.InvitationRepositor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -18,6 +19,8 @@ import java.util.List;
 public class GroupServiceImpl implements GroupService {
     private final GroupRepository repository;
     private final InvitationRepository invitationRepository;
+    private Invitation invitation;
+    private Group group;
 
     @Autowired
     public GroupServiceImpl(GroupRepository repository, InvitationRepository invitationRepository) {
@@ -46,9 +49,17 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void acceptInvitation(InvitationAcceptanceDto acceptanceDto) {
-        Invitation invitation = invitationRepository.findByUid(acceptanceDto.getInvitationUid());
+        if(invitationRepository.findByUid(acceptanceDto.getInvitationUid()) != null) {
+            invitation = invitationRepository.findByUid(acceptanceDto.getInvitationUid());
+        }else{
+            throw new WrongInvitationException();
+        }
         Long groupId = invitation.getGroupId();
-        Group group = repository.findById(groupId);
+        if(repository.findById(groupId) != null){
+            group = repository.findById(groupId);
+        }else{
+            throw new WrongInvitationException();
+        }
         group.getStudentIds().add(acceptanceDto.getStudentId());
         repository.persist();
         invitationRepository.delete(invitation.getUid());
