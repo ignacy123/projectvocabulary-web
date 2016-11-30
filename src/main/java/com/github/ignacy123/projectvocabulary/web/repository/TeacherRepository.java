@@ -5,9 +5,10 @@ import com.github.ignacy123.projectvocabulary.web.domain.User;
 import java.util.List;
 
 /**
- * Created by ignacy on 16.11.16.
+ * Created by ignacy on 30.11.16.
  */
-public interface StudentRepository {
+public interface TeacherRepository {
+
     User findById(Long id);
 
     List<User> findAll();
