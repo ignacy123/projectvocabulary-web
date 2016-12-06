@@ -33,7 +33,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-jdbc')
     compile 'nekohtml:nekohtml:1.9.6.2'
     compile 'commons-io:commons-io:2.5'
-    runtime("mysql:mysql-connector-java")
+    compile("mysql:mysql-connector-java")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 
     testCompile 'org.hamcrest:hamcrest-all:1.3'
