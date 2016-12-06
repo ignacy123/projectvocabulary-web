@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version='1.0' encoding='utf-8'?>
 <dataset>
-    <STUDENT ID="1" EMAIL="a@a.com" PASSWORD="haslo" FIRST_NAME="A" LAST_NAME="A"/>
-    <STUDENT ID="2" EMAIL="b@b.com" PASSWORD="haslo" FIRST_NAME="B" LAST_NAME="B"/>
+    <student id="1" email="a@a.com" password="haslo" first_name="a" last_name="a"/>
+    <student id="2" email="b@b.com" password="haslo" first_name="b" last_name="b"/>
 </dataset>
