@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Created by tokruzel on 30/11/16.
@@ -16,8 +17,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 public class StudentRepositoryDbTestConfig {
 
 	@Bean
-	public StudentRepository studentRepository(NamedParameterJdbcOperations jdbcTemplate) {
-		return new StudentJdbcRepository(jdbcTemplate);
+	public StudentRepository studentRepository(NamedParameterJdbcOperations jdbcTemplate, PasswordEncoder passwordEncoder) {
+		return new StudentJdbcRepository(jdbcTemplate, passwordEncoder);
 	}
 
 }

@@ -14,6 +14,8 @@ import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -67,5 +69,10 @@ public class DbTestConfig {
 	@Bean
 	public NamedParameterJdbcOperations namedParameterJdbcTemplate() throws NamingException {
 		return new NamedParameterJdbcTemplate(getTestDataSource());
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder(){
+		return  NoOpPasswordEncoder.getInstance();
 	}
 }

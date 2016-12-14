@@ -34,7 +34,8 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
     @Autowired
     private DataSource dataSource;
 
-    private PasswordEncoder noEncodingEncoder = NoOpPasswordEncoder.getInstance();
+    @Autowired
+    private PasswordEncoder noEncodingEncoder;
 
     @Before
     public void resetAutoIncrementField() throws SQLException {
