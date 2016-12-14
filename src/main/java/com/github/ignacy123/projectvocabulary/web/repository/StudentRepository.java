@@ -14,5 +14,9 @@ public interface StudentRepository {
 
     User findByEmail(String email);
 
-    User save (User user);
+    User insert(User user);
+
+    void update(User user);
+
+
 }

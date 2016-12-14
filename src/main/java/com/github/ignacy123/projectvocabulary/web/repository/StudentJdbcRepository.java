@@ -54,7 +54,7 @@ public class StudentJdbcRepository implements StudentRepository {
 	}
 
 	@Override
-	public User save(User user) {
+	public User insert(User user) {
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("email", user.getEmail());
 		params.addValue("password", user.getPassword());
@@ -68,4 +68,20 @@ public class StudentJdbcRepository implements StudentRepository {
 		return user;
 
 	}
+
+    @Override
+    public void update(User user) {
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("email", user.getEmail());
+		params.addValue("password", user.getPassword());
+		params.addValue("firstName", user.getFirstName());
+		params.addValue("lastName", user.getLastName());
+		params.addValue("id", user.getId());
+		final String INSERT_SQL =
+				"update `student` set email = :email, password = :password, first_name = :first_name, last_name = :last_name where id = :id";
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		jdbcTemplate.update(INSERT_SQL, params, keyHolder);
+		user.setId((Long) keyHolder.getKey());
+
+    }
 }

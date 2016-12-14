@@ -51,7 +51,7 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
         student.setFirstName("John");
         student.setLastName("Doe");
         student.setPassword(noEncodingEncoder, "1234567890");
-        studentRepository.save(student);
+        studentRepository.insert(student);
     }
 
 
@@ -70,8 +70,8 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
         student2.setFirstName("Johnny");
         student2.setLastName("Doebby");
         student2.setPassword(noEncodingEncoder, "123456789012");
-        studentRepository.save(student);
-        studentRepository.save(student2);
+        studentRepository.insert(student);
+        studentRepository.insert(student2);
 
     }
 

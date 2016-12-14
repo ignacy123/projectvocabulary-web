@@ -3,7 +3,7 @@ package com.github.ignacy123.projectvocabulary.web.service;
 import com.github.ignacy123.projectvocabulary.web.domain.User;
 import com.github.ignacy123.projectvocabulary.web.dto.UserNotFoundException;
 import com.github.ignacy123.projectvocabulary.web.dto.UserUpdateDto;
-import com.github.ignacy123.projectvocabulary.web.repository.UserRepository;
+import com.github.ignacy123.projectvocabulary.web.repository.StudentRepository;
 import com.github.ignacy123.projectvocabulary.web.dto.RegistrationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,12 +15,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    private final StudentRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(StudentRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setType(dto.getType());
-        userRepository.save(user);
+        userRepository.insert(user);
         return user;
     }
 
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(updateDto.getEmail());
         user.setFirstName(updateDto.getFirstName());
         user.setLastName(updateDto.getLastName());
-        userRepository.persist();
+        userRepository.update(user);
         return user;
     }
 }

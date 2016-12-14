@@ -3,6 +3,7 @@ package com.github.ignacy123.projectvocabulary.web.service;
 import com.github.ignacy123.projectvocabulary.web.domain.User;
 import com.github.ignacy123.projectvocabulary.web.dto.RegistrationDto;
 import com.github.ignacy123.projectvocabulary.web.dto.UserNotFoundException;
+import com.github.ignacy123.projectvocabulary.web.repository.StudentRepository;
 import com.github.ignacy123.projectvocabulary.web.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,14 +22,14 @@ import static org.mockito.Mockito.when;
  */
 public class UserServiceTest {
 
-    private UserRepository repository;
+    private StudentRepository repository;
     private UserServiceImpl service;
     private User mockedUser;
     private PasswordEncoder passwordEncoder;
 
     @Before
     public void setUp() throws Exception {
-        repository = mock(UserRepository.class);
+        repository = mock(StudentRepository.class);
         passwordEncoder = mock(PasswordEncoder.class);
         service = new UserServiceImpl(repository, passwordEncoder);
 
@@ -73,7 +74,7 @@ public class UserServiceTest {
         service.register(dto);
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        verify(repository).save(userCaptor.capture());
+        verify(repository).insert(userCaptor.capture());
 
         User user = userCaptor.getValue();
         assertThat(user.getEmail(), is(dto.getEmail()));
