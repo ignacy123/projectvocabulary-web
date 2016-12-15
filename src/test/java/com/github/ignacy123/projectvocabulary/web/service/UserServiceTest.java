@@ -38,7 +38,7 @@ public class UserServiceTest {
         mockedUser = new User();
         mockedUser.setEmail("janusz@example.com");
         mockedUser.setId(1L);
-        mockedUser.setPassword(passwordEncoder, "1234567Aa");
+        mockedUser.setRawPassword(passwordEncoder, "1234567Aa");
     }
 
     @Test

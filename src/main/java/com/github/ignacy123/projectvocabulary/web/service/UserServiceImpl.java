@@ -1,10 +1,10 @@
 package com.github.ignacy123.projectvocabulary.web.service;
 
 import com.github.ignacy123.projectvocabulary.web.domain.User;
+import com.github.ignacy123.projectvocabulary.web.dto.RegistrationDto;
 import com.github.ignacy123.projectvocabulary.web.dto.UserNotFoundException;
 import com.github.ignacy123.projectvocabulary.web.dto.UserUpdateDto;
 import com.github.ignacy123.projectvocabulary.web.repository.StudentRepository;
-import com.github.ignacy123.projectvocabulary.web.dto.RegistrationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,53 +15,51 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final StudentRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+	private final StudentRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
 
+	@Autowired
+	public UserServiceImpl(StudentRepository userRepository, PasswordEncoder passwordEncoder) {
+		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
+	}
 
-    @Autowired
-    public UserServiceImpl(StudentRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+	public User register(RegistrationDto dto) {
+		User user = new User();
+		user.setRawPassword(passwordEncoder, dto.getPassword());
+		user.setEmail(dto.getEmail());
+		user.setFirstName(dto.getFirstName());
+		user.setLastName(dto.getLastName());
+		user.setType(dto.getType());
+		userRepository.insert(user);
+		return user;
+	}
 
-    public User register(RegistrationDto dto) {
-        User user = new User();
-        user.setPassword(passwordEncoder, dto.getPassword());
-        user.setEmail(dto.getEmail());
-        user.setFirstName(dto.getFirstName());
-        user.setLastName(dto.getLastName());
-        user.setType(dto.getType());
-        userRepository.insert(user);
-        return user;
-    }
+	public User findById(Long id) {
+		return userRepository.findById(id);
+	}
 
+	@Override
+	public User logIn(String email, String password) {
+		try {
+			User user = userRepository.findByEmail(email);
 
-    public User findById(Long id) {
-        return userRepository.findById(id);
-    }
+			if (user.matchesPassword(passwordEncoder, password)) {
+				return user;
+			}
+		} catch (UserNotFoundException e) {
+			throw new WrongCredentialsException();
+		}
+		throw new WrongCredentialsException();
+	}
 
-    @Override
-    public User logIn(String email, String password) {
-        try {
-            User user = userRepository.findByEmail(email);
-
-            if (user.matchesPassword(passwordEncoder, password)) {
-                return user;
-            }
-        } catch (UserNotFoundException e) {
-            throw new WrongCredentialsException();
-        }
-        throw new WrongCredentialsException();
-    }
-
-    @Override
-    public User updateUser(Long id, UserUpdateDto updateDto) {
-        User user = findById(id);
-        user.setEmail(updateDto.getEmail());
-        user.setFirstName(updateDto.getFirstName());
-        user.setLastName(updateDto.getLastName());
-        userRepository.update(user);
-        return user;
-    }
+	@Override
+	public User updateUser(Long id, UserUpdateDto updateDto) {
+		User user = findById(id);
+		user.setEmail(updateDto.getEmail());
+		user.setFirstName(updateDto.getFirstName());
+		user.setLastName(updateDto.getLastName());
+		userRepository.update(user);
+		return user;
+	}
 }

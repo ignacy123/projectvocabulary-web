@@ -17,8 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class StudentRepositoryDbTestConfig {
 
 	@Bean
-	public StudentRepository studentRepository(NamedParameterJdbcOperations jdbcTemplate, PasswordEncoder passwordEncoder) {
-		return new StudentJdbcRepository(jdbcTemplate, passwordEncoder);
+	public StudentRepository studentRepository(NamedParameterJdbcOperations jdbcTemplate) {
+		return new StudentJdbcRepository(jdbcTemplate);
 	}
 
 }

@@ -40,7 +40,7 @@ public class UserXmlRepositoryTest extends RepositoryTest {
         prepareRepository("/repository/emptyRepositoryFile.xml");
         User user = new User();
         user.setEmail("janusz@example.com");
-        user.setPassword(passwordEncoder, "1234567");
+        user.setRawPassword(passwordEncoder, "1234567");
         user.setFirstName("janusz");
         user.setLastName("kowalski");
         repository.save(user);
@@ -56,12 +56,12 @@ public class UserXmlRepositoryTest extends RepositoryTest {
         janusz.setFirstName("Janusz");
         janusz.setLastName("Kowalski");
         janusz.setEmail("janusz@example.com");
-        janusz.setPassword(passwordEncoder, "1234567");
+        janusz.setRawPassword(passwordEncoder, "1234567");
         User mariusz = new User();
         mariusz.setFirstName("Mariusz");
         mariusz.setLastName("Nowak");
         mariusz.setEmail("mariusz@example.com");
-        mariusz.setPassword(passwordEncoder, "1234567");
+        mariusz.setRawPassword(passwordEncoder, "1234567");
         repository.save(janusz);
         repository.save(mariusz);
         String expectedXml = "<users>\n" +
@@ -96,7 +96,7 @@ public class UserXmlRepositoryTest extends RepositoryTest {
         prepareRepository("/repository/standardRepository.xml");
         User janusz = new User();
         janusz.setEmail("janusz@example.com");
-        janusz.setPassword(passwordEncoder, "1234567");
+        janusz.setRawPassword(passwordEncoder, "1234567");
         repository.save(janusz);
     }
 
@@ -130,7 +130,7 @@ public class UserXmlRepositoryTest extends RepositoryTest {
         janusz.setFirstName("Janusz");
         janusz.setLastName("Kowalski");
         janusz.setEmail("janusz@example.com");
-        janusz.setPassword(passwordEncoder, "1234567");
+        janusz.setRawPassword(passwordEncoder, "1234567");
         janusz = repository.save(janusz);
         assertThat(janusz.getId(), is(1L));
         String expectedXml = "<users>\n" +
@@ -146,7 +146,7 @@ public class UserXmlRepositoryTest extends RepositoryTest {
         prepareRepository("/repository/standardRepository.xml");
         User janusz = new User();
         janusz.setEmail("janusz2@example.com");
-        janusz.setPassword(passwordEncoder, "1234567");
+        janusz.setRawPassword(passwordEncoder, "1234567");
         janusz = repository.save(janusz);
         assertThat(janusz.getId(), is(3L));
         String expectedXml = "<users>\n" +
