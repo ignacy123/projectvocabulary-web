@@ -3,10 +3,12 @@ package com.github.ignacy123.projectvocabulary.web.repository.student;
 import com.github.ignacy123.projectvocabulary.web.domain.User;
 import com.github.ignacy123.projectvocabulary.web.repository.BaseDBUnitTest;
 import com.github.ignacy123.projectvocabulary.web.repository.DbTestUtil;
+import com.github.ignacy123.projectvocabulary.web.repository.NotUniqueEmailException;
 import com.github.ignacy123.projectvocabulary.web.repository.StudentRepository;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,10 +18,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.hasProperty;
+
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by tokruzel on 30/11/16.
@@ -41,6 +49,8 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
     public void resetAutoIncrementField() throws SQLException {
         DbTestUtil.resetAutoIncrementInTable(dataSource, "student");
     }
+
+    private PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
 
     @Test
     @DatabaseSetup(value = "classpath:repository/student/StudentRepositoryDbTest_saveStudent_in.xml")
@@ -80,6 +90,89 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
     @DatabaseSetup(value = "classpath:repository/student/StudentRepositoryDbTest_saveTwo_in.xml")
     public void findById() {
         User student = studentRepository.findById(1L);
-//        assertThat(student)is;
+        User student2 = new User();
+        student2.setFirstName("a");
+        student2.setLastName("a");
+        student2.setId(1L);
+        student2.setEmail("a@a.com");
+        assertThat((student.getId()), is(student2.getId()));
     }
+
+    @Test
+    @DatabaseSetup(value = "classpath:repository/student/StudentRepositoryDbTest_saveTwo_in.xml")
+    public void findByEmail() {
+        User student = studentRepository.findByEmail("a@a.com");
+        User student2 = new User();
+        student2.setFirstName("a");
+        student2.setLastName("a");
+        student2.setId(1L);
+        student2.setEmail("a@a.com");
+        assertThat((student.getEmail()), is(student2.getEmail()));
+    }
+
+    @Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
+    @DatabaseSetup(value = "classpath:repository/student/StudentRepositoryDbTest_saveTwo_in.xml")
+    public void testSaveThrowsWhenEmailNotUnique() throws Exception {
+        User janusz = new User();
+        janusz.setEmail("a@a.com");
+        janusz.setPassword(passwordEncoder, "1234567");
+        studentRepository.insert(janusz);
+    }
+
+
+    @Test
+    @DatabaseSetup(value = "classpath:repository/student/StudentRepositoryDbTest_findAll_in.xml")
+    public void findAll() {
+        List<User> users = studentRepository.findAll();
+
+        assertThat(users.size(), is(3));
+        assertThat(users, hasItem(allOf(
+                hasProperty("id", is(1L)),
+                hasProperty("email", is("a@a.com"))
+        )));
+        assertThat(users, hasItem(allOf(
+                hasProperty("id", is(3L)),
+                hasProperty("email", is("c@c.com"))
+        )));
+    }
+
+    @Test
+    @DatabaseSetup(value = "classpath:repository/student/StudentRepositoryDbTest_emptyRepository.xml")
+    public void firstIdIs1(){
+        User user = new User();
+        user.setFirstName("a");
+        user.setLastName("a");
+        user.setEmail("d@d.com");
+        user.setPassword(passwordEncoder, "haslo");
+        studentRepository.insert(user);
+        User assertedUser = studentRepository.findByEmail("d@d.com");
+        assertThat((assertedUser.getId()), is(1L));
+
+    }
+
+    @Test
+    @DatabaseSetup(value = "classpath:repository/student/StudentRepositoryDbTest_emptyRepository.xml")
+    public void thirdIdIs3(){
+        User user = new User();
+        user.setFirstName("a");
+        user.setLastName("a");
+        user.setEmail("d@d.com");
+        user.setPassword(passwordEncoder, "haslo");
+        User user2 = new User();
+        user.setFirstName("a2");
+        user.setLastName("a2");
+        user.setEmail("d2@d2.com");
+        user.setPassword(passwordEncoder, "haslo2");
+        User user3 = new User();
+        user.setFirstName("a3");
+        user.setLastName("a3");
+        user.setEmail("d3@d3.com");
+        user.setPassword(passwordEncoder, "haslo3");
+        studentRepository.insert(user);
+        User assertedUser = studentRepository.findByEmail("d3@d3.com");
+        assertThat((assertedUser.getId()), is(3L));
+
+    }
+
+
 }
