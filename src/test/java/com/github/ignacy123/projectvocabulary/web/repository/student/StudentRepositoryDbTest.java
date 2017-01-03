@@ -154,22 +154,25 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
     @Test
     @DatabaseSetup(value = "classpath:repository/student/StudentRepositoryDbTest_emptyRepository.xml")
     public void thirdIdIs3(){
+        when(passwordEncoder.encode("haslo")).thenReturn("20eabe5d64b0e216796e834f52d61fd0b70332fc");
         User user = new User();
         user.setFirstName("a");
         user.setLastName("a");
         user.setEmail("d@d.com");
         user.setRawPassword(passwordEncoder, "haslo");
         User user2 = new User();
-        user.setFirstName("a2");
-        user.setLastName("a2");
-        user.setEmail("d2@d2.com");
-        user.setRawPassword(passwordEncoder, "haslo2");
+        user2.setFirstName("a2");
+        user2.setLastName("a2");
+        user2.setEmail("d2@d2.com");
+        user2.setRawPassword(passwordEncoder, "haslo");
         User user3 = new User();
-        user.setFirstName("a3");
-        user.setLastName("a3");
-        user.setEmail("d3@d3.com");
-        user.setRawPassword(passwordEncoder, "haslo3");
+        user3.setFirstName("a3");
+        user3.setLastName("a3");
+        user3.setEmail("d3@d3.com");
+        user3.setRawPassword(passwordEncoder, "haslo");
         studentRepository.insert(user);
+        studentRepository.insert(user2);
+        studentRepository.insert(user3);
         User assertedUser = studentRepository.findByEmail("d3@d3.com");
         assertThat((assertedUser.getId()), is(3L));
 
