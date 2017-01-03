@@ -139,6 +139,7 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
     @Test
     @DatabaseSetup(value = "classpath:repository/student/StudentRepositoryDbTest_emptyRepository.xml")
     public void firstIdIs1(){
+        when(passwordEncoder.encode("haslo")).thenReturn("20eabe5d64b0e216796e834f52d61fd0b70332fc");
         User user = new User();
         user.setFirstName("a");
         user.setLastName("a");
