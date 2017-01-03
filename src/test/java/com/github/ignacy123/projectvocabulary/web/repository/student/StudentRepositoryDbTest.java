@@ -61,7 +61,7 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
         student.setEmail("email@email.com");
         student.setFirstName("John");
         student.setLastName("Doe");
-        student.setPassword(noEncodingEncoder, "1234567890");
+        student.setRawPassword(noEncodingEncoder, "1234567890");
         studentRepository.insert(student);
     }
 
@@ -75,12 +75,12 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
         student.setEmail("email@email.com");
         student.setFirstName("John");
         student.setLastName("Doe");
-        student.setPassword(noEncodingEncoder, "1234567890");
+        student.setRawPassword(noEncodingEncoder, "1234567890");
         final User student2 = new User();
         student2.setEmail("email2@email.com");
         student2.setFirstName("Johnny");
         student2.setLastName("Doebby");
-        student2.setPassword(noEncodingEncoder, "123456789012");
+        student2.setRawPassword(noEncodingEncoder, "123456789012");
         studentRepository.insert(student);
         studentRepository.insert(student2);
 
