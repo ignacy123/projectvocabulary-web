@@ -115,7 +115,7 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
     public void testSaveThrowsWhenEmailNotUnique() throws Exception {
         User janusz = new User();
         janusz.setEmail("a@a.com");
-        janusz.setPassword(passwordEncoder, "1234567");
+        janusz.setRawPassword(passwordEncoder, "1234567");
         studentRepository.insert(janusz);
     }
 
@@ -144,7 +144,7 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
         user.setFirstName("a");
         user.setLastName("a");
         user.setEmail("d@d.com");
-        user.setPassword(passwordEncoder, "haslo");
+        user.setRawPassword(passwordEncoder, "haslo");
         studentRepository.insert(user);
         User assertedUser = studentRepository.findByEmail("d@d.com");
         assertThat((assertedUser.getId()), is(1L));
@@ -158,17 +158,17 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
         user.setFirstName("a");
         user.setLastName("a");
         user.setEmail("d@d.com");
-        user.setPassword(passwordEncoder, "haslo");
+        user.setRawPassword(passwordEncoder, "haslo");
         User user2 = new User();
         user.setFirstName("a2");
         user.setLastName("a2");
         user.setEmail("d2@d2.com");
-        user.setPassword(passwordEncoder, "haslo2");
+        user.setRawPassword(passwordEncoder, "haslo2");
         User user3 = new User();
         user.setFirstName("a3");
         user.setLastName("a3");
         user.setEmail("d3@d3.com");
-        user.setPassword(passwordEncoder, "haslo3");
+        user.setRawPassword(passwordEncoder, "haslo3");
         studentRepository.insert(user);
         User assertedUser = studentRepository.findByEmail("d3@d3.com");
         assertThat((assertedUser.getId()), is(3L));
