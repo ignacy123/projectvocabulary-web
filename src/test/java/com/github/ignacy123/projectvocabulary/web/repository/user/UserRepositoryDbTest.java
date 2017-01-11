@@ -1,19 +1,17 @@
-package com.github.ignacy123.projectvocabulary.web.repository.student;
+package com.github.ignacy123.projectvocabulary.web.repository.user;
 
 import com.github.ignacy123.projectvocabulary.web.domain.User;
 import com.github.ignacy123.projectvocabulary.web.repository.BaseDBUnitTest;
 import com.github.ignacy123.projectvocabulary.web.repository.DbTestUtil;
-import com.github.ignacy123.projectvocabulary.web.repository.NotUniqueEmailException;
 import com.github.ignacy123.projectvocabulary.web.repository.StudentRepository;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
-import org.hamcrest.Matcher;
+import org.dbunit.database.DefaultMetadataHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -33,8 +31,8 @@ import static org.mockito.Mockito.when;
  * Created by tokruzel on 30/11/16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {StudentRepositoryDbTestConfig.class})
-public class StudentRepositoryDbTest extends BaseDBUnitTest {
+@ContextConfiguration(classes = {UserRepositoryDbTestConfig.class})
+public class UserRepositoryDbTest extends BaseDBUnitTest {
 
     @Autowired
     StudentRepository studentRepository;
@@ -47,14 +45,14 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
 
     @Before
     public void resetAutoIncrementField() throws SQLException {
-        DbTestUtil.resetAutoIncrementInTable(dataSource, "student");
+        DbTestUtil.resetAutoIncrementInTable(dataSource, "user");
     }
 
     private PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
 
     @Test
-    @DatabaseSetup(value = "classpath:repository/student/StudentRepositoryDbTest_saveStudent_in.xml")
-    @ExpectedDatabase(value = "classpath:repository/student/StudentRepositoryDbTest_saveStudent_out.xml",
+    @DatabaseSetup(value = "classpath:repository/user/StudentRepositoryDbTest_saveStudent_in.xml")
+    @ExpectedDatabase(value = "classpath:repository/user/StudentRepositoryDbTest_saveStudent_out.xml",
             assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void saveStudent() {
         final User student = new User();
@@ -67,8 +65,8 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
 
 
     @Test
-    @DatabaseSetup(value = "classpath:repository/student/StudentRepositoryDbTest_saveTwo_in.xml")
-    @ExpectedDatabase(value = "classpath:repository/student/StudentRepositoryDbTest_saveTwo_out.xml",
+    @DatabaseSetup(value = "classpath:repository/user/StudentRepositoryDbTest_saveTwo_in.xml")
+    @ExpectedDatabase(value = "classpath:repository/user/StudentRepositoryDbTest_saveTwo_out.xml",
             assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void saveTwo() {
         final User student = new User();
@@ -87,7 +85,7 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
     }
 
     @Test
-    @DatabaseSetup(value = "classpath:repository/student/StudentRepositoryDbTest_saveTwo_in.xml")
+    @DatabaseSetup(value = "classpath:repository/user/StudentRepositoryDbTest_saveTwo_in.xml")
     public void findById() {
         User student = studentRepository.findById(1L);
         User student2 = new User();
@@ -99,7 +97,7 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
     }
 
     @Test
-    @DatabaseSetup(value = "classpath:repository/student/StudentRepositoryDbTest_saveTwo_in.xml")
+    @DatabaseSetup(value = "classpath:repository/user/StudentRepositoryDbTest_saveTwo_in.xml")
     public void findByEmail() {
         User student = studentRepository.findByEmail("a@a.com");
         User student2 = new User();
@@ -111,7 +109,7 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
     }
 
     @Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
-    @DatabaseSetup(value = "classpath:repository/student/StudentRepositoryDbTest_saveTwo_in.xml")
+    @DatabaseSetup(value = "classpath:repository/user/StudentRepositoryDbTest_saveTwo_in.xml")
     public void testSaveThrowsWhenEmailNotUnique() throws Exception {
         User janusz = new User();
         janusz.setEmail("a@a.com");
@@ -121,7 +119,7 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
 
 
     @Test
-    @DatabaseSetup(value = "classpath:repository/student/StudentRepositoryDbTest_findAll_in.xml")
+    @DatabaseSetup(value = "classpath:repository/user/StudentRepositoryDbTest_findAll_in.xml")
     public void findAll() {
         List<User> users = studentRepository.findAll();
 
@@ -137,7 +135,7 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
     }
 
     @Test
-    @DatabaseSetup(value = "classpath:repository/student/StudentRepositoryDbTest_emptyRepository.xml")
+    @DatabaseSetup(value = "classpath:repository/user/StudentRepositoryDbTest_emptyRepository.xml")
     public void firstIdIs1(){
         when(passwordEncoder.encode("haslo")).thenReturn("20eabe5d64b0e216796e834f52d61fd0b70332fc");
         User user = new User();
@@ -152,7 +150,7 @@ public class StudentRepositoryDbTest extends BaseDBUnitTest {
     }
 
     @Test
-    @DatabaseSetup(value = "classpath:repository/student/StudentRepositoryDbTest_emptyRepository.xml")
+    @DatabaseSetup(value = "classpath:repository/user/StudentRepositoryDbTest_emptyRepository.xml")
     public void thirdIdIs3(){
         when(passwordEncoder.encode("haslo")).thenReturn("20eabe5d64b0e216796e834f52d61fd0b70332fc");
         User user = new User();

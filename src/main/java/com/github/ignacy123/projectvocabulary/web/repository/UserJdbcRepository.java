@@ -17,11 +17,10 @@ import java.util.Map;
  * Created by ignacy on 16.11.16.
  */
 @Repository
-public class StudentJdbcRepository implements StudentRepository {
+public class UserJdbcRepository implements StudentRepository {
 
 	private static final RowMapper<User> TEACHER_ROW_MAPPER = (rs, rowNum) -> {
 		User user = new User();
-		user.setType(User.Type.STUDENT);
 		user.setId(rs.getLong("id"));
 		user.setEmail(rs.getString("email"));
 		user.setEncodedPassword(rs.getString("password"));
@@ -32,7 +31,7 @@ public class StudentJdbcRepository implements StudentRepository {
 	private final NamedParameterJdbcOperations jdbcTemplate;
 
 	@Autowired
-	public StudentJdbcRepository(NamedParameterJdbcOperations jdbcTemplate) {
+	public UserJdbcRepository(NamedParameterJdbcOperations jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
@@ -40,19 +39,19 @@ public class StudentJdbcRepository implements StudentRepository {
 	public User findById(Long id) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("id", id);
-		return jdbcTemplate.queryForObject("SELECT * FROM `student` s WHERE s.id=:id", params, TEACHER_ROW_MAPPER);
+		return jdbcTemplate.queryForObject("SELECT * FROM `user` s WHERE s.id=:id", params, TEACHER_ROW_MAPPER);
 	}
 
 	@Override
 	public List<User> findAll() {
-		return jdbcTemplate.query("SELECT * FROM `student`", TEACHER_ROW_MAPPER);
+		return jdbcTemplate.query("SELECT * FROM `user`", TEACHER_ROW_MAPPER);
 	}
 
 	@Override
 	public User findByEmail(String email) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("email", email);
-		return jdbcTemplate.queryForObject("SELECT * FROM `student` s WHERE s.email=:email", params, TEACHER_ROW_MAPPER);
+		return jdbcTemplate.queryForObject("SELECT * FROM `user` s WHERE s.email=:email", params, TEACHER_ROW_MAPPER);
 
 	}
 
@@ -64,7 +63,7 @@ public class StudentJdbcRepository implements StudentRepository {
 		params.addValue("firstName", user.getFirstName());
 		params.addValue("lastName", user.getLastName());
 		final String INSERT_SQL =
-				"insert into `student` (email, password, first_name, last_name) " + "values (:email, :password, :firstName, :lastName)";
+				"insert into `user` (email, password, first_name, last_name) " + "values (:email, :password, :firstName, :lastName)";
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(INSERT_SQL, params, keyHolder);
 		user.setId((Long) keyHolder.getKey());
@@ -81,7 +80,7 @@ public class StudentJdbcRepository implements StudentRepository {
 		params.addValue("lastName", user.getLastName());
 		params.addValue("id", user.getId());
 		final String INSERT_SQL =
-				"update `student` set email = :email, password = :password, first_name = :first_name, last_name = :last_name where id = :id";
+				"update `user` set email = :email, password = :password, first_name = :first_name, last_name = :last_name where id = :id";
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(INSERT_SQL, params, keyHolder);
 		user.setId((Long) keyHolder.getKey());
