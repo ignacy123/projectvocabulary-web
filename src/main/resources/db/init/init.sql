@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 03, 2017 at 01:02 PM
+-- Generation Time: Jan 11, 2017 at 01:19 PM
 -- Server version: 5.7.16-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.3
 
@@ -126,7 +126,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`) VALUES
-(7, '', '', '', '');
+(7, '', '', '', ''),
+(8, 'email@example.com', '$2a$10$Zvvc.9fXqZnnNRp7UIldb.2u2a.xJ2JnpM5IXSREYI5exWXc1fixW', 'Janusz', 'Kowalski');
 
 --
 -- Indexes for dumped tables
@@ -196,7 +197,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `Id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `student`
 --
@@ -206,12 +207,12 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT for table `teacher`
 --
 ALTER TABLE `teacher`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- Constraints for dumped tables
 --
@@ -220,7 +221,7 @@ ALTER TABLE `user`
 -- Constraints for table `groups`
 --
 ALTER TABLE `groups`
-  ADD CONSTRAINT `group_teacher` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`);
+  ADD CONSTRAINT `group_teacher` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `roles`
@@ -233,14 +234,13 @@ ALTER TABLE `roles`
 -- Constraints for table `student`
 --
 ALTER TABLE `student`
-  ADD CONSTRAINT `student_group` FOREIGN KEY (`id`) REFERENCES `student_group` (`student_id`),
   ADD CONSTRAINT `student_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `student_group`
 --
 ALTER TABLE `student_group`
-  ADD CONSTRAINT `student_group_group` FOREIGN KEY (`group_id`) REFERENCES `groups` (`Id`);
+  ADD CONSTRAINT `student_group_group` FOREIGN KEY (`group_id`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `teacher`
