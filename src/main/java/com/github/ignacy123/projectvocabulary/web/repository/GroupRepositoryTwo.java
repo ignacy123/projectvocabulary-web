@@ -7,10 +7,10 @@ import java.util.List;
 /**
  * Created by ignacy on 31.08.16.
  */
-public interface GroupRepository {
+public interface GroupRepositoryTwo {
     Group createNew(Group group);
 
-    void update();
+    void persist();
 
     List<Group> findByTeacherId(Long teacherId);
 

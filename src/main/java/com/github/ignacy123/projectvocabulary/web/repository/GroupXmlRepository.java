@@ -1,7 +1,6 @@
 package com.github.ignacy123.projectvocabulary.web.repository;
 
 import com.github.ignacy123.projectvocabulary.web.domain.Group;
-import com.github.ignacy123.projectvocabulary.web.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -23,7 +22,7 @@ import java.util.stream.Collectors;
  * Created by ignacy on 31.08.16.
  */
 @Repository
-public class GroupXmlRepository implements GroupRepository {
+public class GroupXmlRepository implements GroupRepositoryTwo {
 
     private final File repositoryFile;
     private Groups groups;

@@ -3,11 +3,10 @@ package com.github.ignacy123.projectvocabulary.web.repository.user;
 import com.github.ignacy123.projectvocabulary.web.domain.User;
 import com.github.ignacy123.projectvocabulary.web.repository.BaseDBUnitTest;
 import com.github.ignacy123.projectvocabulary.web.repository.DbTestUtil;
-import com.github.ignacy123.projectvocabulary.web.repository.StudentRepository;
+import com.github.ignacy123.projectvocabulary.web.repository.UserRepository;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
-import org.dbunit.database.DefaultMetadataHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +34,7 @@ import static org.mockito.Mockito.when;
 public class UserRepositoryDbTest extends BaseDBUnitTest {
 
     @Autowired
-    StudentRepository studentRepository;
+    UserRepository studentRepository;
 
     @Autowired
     private DataSource dataSource;

@@ -24,7 +24,7 @@ import java.util.UUID;
  * Created by ignacy on 31.08.16.
  */
 @Repository
-public class InvitationXmlRepository implements InvitationRepository {
+public class InvitationXmlRepository implements InvitationRepositoryTwo {
 
     private final File repositoryFile;
     private Invitations invitations;

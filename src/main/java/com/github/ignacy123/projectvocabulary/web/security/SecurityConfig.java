@@ -1,7 +1,6 @@
 package com.github.ignacy123.projectvocabulary.web.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.ignacy123.projectvocabulary.web.repository.StudentRepository;
 import com.github.ignacy123.projectvocabulary.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +28,7 @@ import javax.servlet.Filter;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private StudentRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
     private ObjectMapper objectMapper;
 

@@ -3,12 +3,10 @@ package com.github.ignacy123.projectvocabulary.web.service;
 import com.github.ignacy123.projectvocabulary.web.domain.User;
 import com.github.ignacy123.projectvocabulary.web.dto.RegistrationDto;
 import com.github.ignacy123.projectvocabulary.web.dto.UserNotFoundException;
-import com.github.ignacy123.projectvocabulary.web.repository.StudentRepository;
 import com.github.ignacy123.projectvocabulary.web.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -22,14 +20,14 @@ import static org.mockito.Mockito.when;
  */
 public class UserServiceTest {
 
-    private StudentRepository repository;
+    private UserRepository repository;
     private UserServiceImpl service;
     private User mockedUser;
     private PasswordEncoder passwordEncoder;
 
     @Before
     public void setUp() throws Exception {
-        repository = mock(StudentRepository.class);
+        repository = mock(UserRepository.class);
         passwordEncoder = mock(PasswordEncoder.class);
         service = new UserServiceImpl(repository, passwordEncoder);
 

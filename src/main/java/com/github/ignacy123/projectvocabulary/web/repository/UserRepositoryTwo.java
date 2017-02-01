@@ -5,18 +5,17 @@ import com.github.ignacy123.projectvocabulary.web.domain.User;
 import java.util.List;
 
 /**
- * Created by ignacy on 16.11.16.
+ * Created by ignacy on 19.05.16.
  */
-public interface StudentRepository {
-    User findById(Long id);
+public interface UserRepositoryTwo {
+    User save(User user);
 
-    List<User> findAll();
+    void persist();
 
     User findByEmail(String email);
 
-    User insert(User user);
+    User findById(Long id);
 
-    void update(User user);
-
+    List<User> findAll();
 
 }

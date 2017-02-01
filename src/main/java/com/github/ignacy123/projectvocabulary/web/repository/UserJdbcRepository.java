@@ -17,9 +17,9 @@ import java.util.Map;
  * Created by ignacy on 16.11.16.
  */
 @Repository
-public class UserJdbcRepository implements StudentRepository {
+public class UserJdbcRepository implements UserRepository {
 
-	private static final RowMapper<User> TEACHER_ROW_MAPPER = (rs, rowNum) -> {
+	private static final RowMapper<User> USER_ROW_MAPPER = (rs, rowNum) -> {
 		User user = new User();
 		user.setId(rs.getLong("id"));
 		user.setEmail(rs.getString("email"));
@@ -39,19 +39,19 @@ public class UserJdbcRepository implements StudentRepository {
 	public User findById(Long id) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("id", id);
-		return jdbcTemplate.queryForObject("SELECT * FROM `user` s WHERE s.id=:id", params, TEACHER_ROW_MAPPER);
+		return jdbcTemplate.queryForObject("SELECT * FROM `user` s WHERE s.id=:id", params, USER_ROW_MAPPER);
 	}
 
 	@Override
 	public List<User> findAll() {
-		return jdbcTemplate.query("SELECT * FROM `user`", TEACHER_ROW_MAPPER);
+		return jdbcTemplate.query("SELECT * FROM `user`", USER_ROW_MAPPER);
 	}
 
 	@Override
 	public User findByEmail(String email) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("email", email);
-		return jdbcTemplate.queryForObject("SELECT * FROM `user` s WHERE s.email=:email", params, TEACHER_ROW_MAPPER);
+		return jdbcTemplate.queryForObject("SELECT * FROM `user` s WHERE s.email=:email", params, USER_ROW_MAPPER);
 
 	}
 

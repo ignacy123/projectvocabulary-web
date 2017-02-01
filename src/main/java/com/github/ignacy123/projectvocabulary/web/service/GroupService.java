@@ -17,7 +17,7 @@ public interface GroupService {
     @PreAuthorize("principal.type == T(com.github.ignacy123.projectvocabulary.web.domain.User.Type).TEACHER && principal.id==#group.teacherId")
     Group createGroup(@P("group") Group group);
 
-    @PreAuthorize("principal.type == T(com.github.ignacy123.projectvocabulary.web.domain.User.Type).TEACHER && principal.id==#teacherId")
+//    @PreAuthorize("principal.type == T(com.github.ignacy123.projectvocabulary.web.domain.User.Type).TEACHER && principal.id==#teacherId")
     List<Group> getTeacherGroups(@P("teacherId") Long teacherId);
 
     // && principal.id==#group.teacherId"
