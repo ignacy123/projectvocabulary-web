@@ -14,6 +14,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.Formatter;
+import java.util.Set;
 
 /**
  * Created by ignacy on 19.05.16.
@@ -39,6 +40,9 @@ public class User implements UserDetails {
 	private String firstName;
 	@XmlAttribute
 	private String lastName;
+
+	@JsonIgnore
+	private Collection<GrantedAuthority> authorities;
 
 	public Long getId() {
 		return id;
@@ -120,7 +124,17 @@ public class User implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return AuthorityUtils.createAuthorityList("ROLE_USER");
+		return authorities;
+	}
+
+	public void setAuthorities(Set<Role> roles) {
+		String[] rolesStrings = new String[roles.size()];
+		int i = 0;
+		for (Role role : roles) {
+			rolesStrings[i] = "ROLE_"+role.toString();
+			i++;
+		}
+		authorities = AuthorityUtils.createAuthorityList(rolesStrings);
 	}
 
 	@Override

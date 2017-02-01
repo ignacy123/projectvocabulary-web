@@ -14,14 +14,13 @@ import java.util.List;
  */
 public interface GroupService {
 
-    @PreAuthorize("principal.type == T(com.github.ignacy123.projectvocabulary.web.domain.User.Type).TEACHER && principal.id==#group.teacherId")
+    @PreAuthorize("hasRole('ROLE_TEACHER') && principal.id==#group.teacherId")
     Group createGroup(@P("group") Group group);
 
-//    @PreAuthorize("principal.type == T(com.github.ignacy123.projectvocabulary.web.domain.User.Type).TEACHER && principal.id==#teacherId")
+    @PreAuthorize("hasRole('ROLE_TEACHER') && principal.id==#teacherId")
     List<Group> getTeacherGroups(@P("teacherId") Long teacherId);
 
-    // && principal.id==#group.teacherId"
-    @PreAuthorize("principal.type == T(com.github.ignacy123.projectvocabulary.web.domain.User.Type).TEACHER")
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
     Invitation createInvitation(Long id, InvitationDto dto);
 
     void acceptInvitation(InvitationAcceptanceDto acceptanceDto);

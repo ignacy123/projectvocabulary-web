@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by ignacy on 19.05.16.
  */
-@Repository
+
 public class UserXmlRepository implements UserRepositoryTwo {
     private final File repositoryFile;
     Users users = new Users();

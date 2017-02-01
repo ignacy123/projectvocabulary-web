@@ -1,5 +1,6 @@
 package com.github.ignacy123.projectvocabulary.web.repository;
 
+import com.github.ignacy123.projectvocabulary.web.domain.Role;
 import com.github.ignacy123.projectvocabulary.web.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
@@ -12,12 +13,14 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by ignacy on 16.11.16.
  */
 @Repository
 public class UserJdbcRepository implements UserRepository {
+	private RolesRepository roleRepo;
 
 	private static final RowMapper<User> USER_ROW_MAPPER = (rs, rowNum) -> {
 		User user = new User();
@@ -31,15 +34,23 @@ public class UserJdbcRepository implements UserRepository {
 	private final NamedParameterJdbcOperations jdbcTemplate;
 
 	@Autowired
-	public UserJdbcRepository(NamedParameterJdbcOperations jdbcTemplate) {
+	public UserJdbcRepository(NamedParameterJdbcOperations jdbcTemplate, RolesRepository rolesRepository) {
 		this.jdbcTemplate = jdbcTemplate;
+		this.roleRepo = rolesRepository;
 	}
 
 	@Override
 	public User findById(Long id) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("id", id);
-		return jdbcTemplate.queryForObject("SELECT * FROM `user` s WHERE s.id=:id", params, USER_ROW_MAPPER);
+		User user =  jdbcTemplate.queryForObject("SELECT * FROM `user` s WHERE s.id=:id", params, USER_ROW_MAPPER);
+		setRoles(user);
+		return user;
+	}
+
+	private void setRoles(User user) {
+		Set<Role> roles = roleRepo.getRoles(user.getId());
+		user.setAuthorities(roles);
 	}
 
 	@Override
@@ -51,8 +62,9 @@ public class UserJdbcRepository implements UserRepository {
 	public User findByEmail(String email) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("email", email);
-		return jdbcTemplate.queryForObject("SELECT * FROM `user` s WHERE s.email=:email", params, USER_ROW_MAPPER);
-
+		User user = jdbcTemplate.queryForObject("SELECT * FROM `user` s WHERE s.email=:email", params, USER_ROW_MAPPER);
+		setRoles(user);
+		return user;
 	}
 
 	@Override

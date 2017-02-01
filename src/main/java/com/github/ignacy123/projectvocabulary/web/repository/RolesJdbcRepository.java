@@ -4,12 +4,14 @@ import com.github.ignacy123.projectvocabulary.web.domain.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 /**
  * Created by ignacy on 11.01.17.
  */
+@Repository
 public class RolesJdbcRepository implements RolesRepository {
 
 	private static final RowMapper<Role> ROLE_ROW_MAPPER = (rs, rowNum) -> {
