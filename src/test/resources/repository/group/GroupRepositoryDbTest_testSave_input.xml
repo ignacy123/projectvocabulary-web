@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<dataset>
+    <group Id="1" teacher_id="1" name="testOne"/>
+    <group Id="2" teacher_id="2" name="testTwo"/>
+</dataset>

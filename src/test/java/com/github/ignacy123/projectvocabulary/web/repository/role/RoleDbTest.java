@@ -3,7 +3,7 @@ package com.github.ignacy123.projectvocabulary.web.repository.role;
 import com.github.ignacy123.projectvocabulary.web.domain.Role;
 import com.github.ignacy123.projectvocabulary.web.repository.BaseDBUnitTest;
 import com.github.ignacy123.projectvocabulary.web.repository.RolesJdbcRepository;
-import com.github.ignacy123.projectvocabulary.web.repository.user.RoleDbTestSetup;
+import com.github.ignacy123.projectvocabulary.web.repository.role.RoleDbTestSetup;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.junit.Test;
 import org.junit.runner.RunWith;

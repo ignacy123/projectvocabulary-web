@@ -22,7 +22,7 @@ public class GroupJdbcRepository implements GroupRepository {
         Group group = new Group();
         group.setId(rs.getLong("id"));
         group.setName(rs.getString("name"));
-        group.setTeacherId(rs.getLong("teacherId"));
+        group.setTeacherId(rs.getLong("teacher_id"));
         return group;
     };
     private final NamedParameterJdbcOperations jdbcTemplate;
@@ -54,7 +54,7 @@ public class GroupJdbcRepository implements GroupRepository {
    @Override
     public List<Group> findByTeacherId(Long teacherId) {
         Map<String, Object> params = new HashMap<>();
-        params.put("teacherId", teacherId);
+        params.put("teacher_id", teacherId);
       return jdbcTemplate.query("SELECT * FROM `groups` s WHERE s.teacher_id=:teacher_id", params, GROUP_ROW_MAPPER);
    }
 

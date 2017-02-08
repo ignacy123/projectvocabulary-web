@@ -1,5 +1,6 @@
 package com.github.ignacy123.projectvocabulary.web.repository;
 
+import com.github.ignacy123.projectvocabulary.web.domain.Teacher;
 import com.github.ignacy123.projectvocabulary.web.domain.User;
 
 import java.util.List;
@@ -9,11 +10,9 @@ import java.util.List;
  */
 public interface TeacherRepository {
 
-    User findById(Long id);
+    Teacher findById(Long id);
 
-    List<User> findAll();
+    List<Teacher> findAll();
 
-    User findByEmail(String email);
-
-    User save (User user);
+    Teacher save (Teacher teacher);
 }

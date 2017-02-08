@@ -1,5 +1,6 @@
 package com.github.ignacy123.projectvocabulary.web.service;
 
+import com.github.ignacy123.projectvocabulary.web.domain.Role;
 import com.github.ignacy123.projectvocabulary.web.domain.User;
 import com.github.ignacy123.projectvocabulary.web.dto.RegistrationDto;
 import com.github.ignacy123.projectvocabulary.web.dto.UserNotFoundException;
@@ -8,6 +9,9 @@ import com.github.ignacy123.projectvocabulary.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by ignacy on 19.05.16.
@@ -30,7 +34,9 @@ public class UserServiceImpl implements UserService {
 		user.setEmail(dto.getEmail());
 		user.setFirstName(dto.getFirstName());
 		user.setLastName(dto.getLastName());
-		user.setType(dto.getType());
+		Set<Role> roles = new HashSet<>();
+		roles.add(Role.STUDENT);
+		user.setAuthorities(roles);
 		userRepository.insert(user);
 		return user;
 	}

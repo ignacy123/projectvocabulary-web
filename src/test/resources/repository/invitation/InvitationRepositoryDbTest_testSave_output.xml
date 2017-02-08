@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<dataset>
+    <invitation uid="12345" email="a" groupId="1" studentName="a"/>
+    <invitation uid="123456" email="b" groupId="2" studentName="b"/>
+    <invitation uid="1234567" email="c" groupId="3" studentName="cs"/>
+</dataset>

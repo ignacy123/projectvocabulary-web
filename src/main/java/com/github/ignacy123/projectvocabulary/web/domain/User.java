@@ -22,15 +22,10 @@ import java.util.Set;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class User implements UserDetails {
 
-	public enum Type {
-		STUDENT,
-		TEACHER;
-	}
+
 
 	@XmlAttribute
 	private Long id;
-	@XmlAttribute
-	private Type type;
 	@XmlAttribute
 	private String email;
 	@XmlAttribute
@@ -41,7 +36,6 @@ public class User implements UserDetails {
 	@XmlAttribute
 	private String lastName;
 
-	@JsonIgnore
 	private Collection<GrantedAuthority> authorities;
 
 	public Long getId() {
@@ -50,14 +44,6 @@ public class User implements UserDetails {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Type getType() {
-		return type;
-	}
-
-	public void setType(Type type) {
-		this.type = type;
 	}
 
 	public String getEmail() {

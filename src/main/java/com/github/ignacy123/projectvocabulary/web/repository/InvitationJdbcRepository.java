@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,7 +60,7 @@ public class InvitationJdbcRepository implements InvitationRepository {
     public void delete(String invitationUid) {
         Map<String, Object> params = new HashMap<>();
         params.put("uid", invitationUid);
-        jdbcTemplate.queryForObject("DELETE * FROM `invitation` s WHERE s.uid=:uid", params, INVITATION_ROW_MAPPER);
+        jdbcTemplate.update("DELETE FROM `invitation` WHERE uid=:uid", params);
 
     }
 }
