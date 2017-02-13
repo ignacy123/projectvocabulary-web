@@ -88,8 +88,8 @@ public class UserJdbcRepository implements UserRepository {
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("email", user.getEmail());
 		params.addValue("password", user.getPassword());
-		params.addValue("firstName", user.getFirstName());
-		params.addValue("lastName", user.getLastName());
+		params.addValue("first_name", user.getFirstName());
+		params.addValue("last_name", user.getLastName());
 		params.addValue("id", user.getId());
 		final String INSERT_SQL =
 				"update `user` set email = :email, password = :password, first_name = :first_name, last_name = :last_name where id = :id";

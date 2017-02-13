@@ -1,6 +1,7 @@
 package com.github.ignacy123.projectvocabulary.web.repository.teacher;
 
 import com.github.ignacy123.projectvocabulary.web.domain.Teacher;
+import com.github.ignacy123.projectvocabulary.web.repository.BaseDBUnitTest;
 import com.github.ignacy123.projectvocabulary.web.repository.TeacherJdbcRepository;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
@@ -21,7 +22,7 @@ import static org.junit.Assert.assertThat;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TeacherDbTestSetup.class })
-public class TeacherDbTest {
+public class TeacherDbTest extends BaseDBUnitTest {
     @Autowired
     TeacherJdbcRepository repository;
     @Test
@@ -36,14 +37,14 @@ public class TeacherDbTest {
     }
 
     @Test
-    @DatabaseSetup(value = "classpath:repository/teacher/TeacherpDbTest_testSave_input.xml")
+    @DatabaseSetup(value = "classpath:repository/teacher/TeacherRepositoryDbTest_testSave_input.xml")
     public void testFindById(){
         Teacher teacher = repository.findById(1L);
         assertThat(teacher.getUserId(), is(1L));
     }
 
     @Test
-    @DatabaseSetup(value = "classpath:repository/teacher/TeacherDbTest_testSave_input.xml")
+    @DatabaseSetup(value = "classpath:repository/teacher/TeacherRepositoryDbTest_testSave_input.xml")
     public void testFindAll(){
         List<Teacher> teachers = repository.findAll();
         assertThat(teachers.get(1).getUserId(), is(2L));

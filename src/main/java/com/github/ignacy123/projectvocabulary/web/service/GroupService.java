@@ -24,4 +24,7 @@ public interface GroupService {
     Invitation createInvitation(Long id, InvitationDto dto);
 
     void acceptInvitation(InvitationAcceptanceDto acceptanceDto);
+
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    Group getGroup(Long groupId);
 }

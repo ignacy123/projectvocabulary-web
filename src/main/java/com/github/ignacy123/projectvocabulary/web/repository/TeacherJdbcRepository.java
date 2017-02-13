@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,6 +18,7 @@ import java.util.*;
 /**
  * Created by ignacy on 30.11.16.
  */
+@Repository
 public class TeacherJdbcRepository implements TeacherRepository {
 
     private static final RowMapper<Teacher> TEACHER_ROW_MAPPER = new RowMapper<Teacher>() {

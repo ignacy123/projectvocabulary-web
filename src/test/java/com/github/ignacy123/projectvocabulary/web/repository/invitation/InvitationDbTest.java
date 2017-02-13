@@ -1,6 +1,7 @@
 package com.github.ignacy123.projectvocabulary.web.repository.invitation;
 
 import com.github.ignacy123.projectvocabulary.web.domain.Invitation;
+import com.github.ignacy123.projectvocabulary.web.repository.BaseDBUnitTest;
 import com.github.ignacy123.projectvocabulary.web.repository.InvitationJdbcRepository;
 import com.github.ignacy123.projectvocabulary.web.repository.TeacherJdbcRepository;
 import com.github.ignacy123.projectvocabulary.web.repository.role.RoleDbTestSetup;
@@ -18,7 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {InvitationDbTestSetup.class})
-public class InvitationDbTest {
+public class InvitationDbTest extends BaseDBUnitTest {
 
     @Autowired
     InvitationJdbcRepository repository;
@@ -32,7 +33,8 @@ public class InvitationDbTest {
         invitation.setUid("1234567");
         invitation.setEmail("c");
         invitation.setGroupId(3L);
-        invitation.setName("c");
+        invitation.setName("cs");
+        repository.save(invitation);
     }
 
     @Test

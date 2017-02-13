@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import java.util.Map;
 /**
  * Created by ignacy on 31.01.17.
  */
+@Repository
 public class InvitationJdbcRepository implements InvitationRepository {
 
 

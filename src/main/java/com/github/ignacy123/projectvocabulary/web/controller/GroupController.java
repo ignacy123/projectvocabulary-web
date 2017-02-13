@@ -33,6 +33,11 @@ public class GroupController {
         return service.getTeacherGroups(teacherId);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value="/get")
+    public Group getGroup(@RequestParam Long groupId){
+        return service.getGroup(groupId);
+    }
+
 
 
 }

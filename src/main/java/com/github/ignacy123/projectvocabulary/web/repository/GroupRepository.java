@@ -14,6 +14,7 @@ public interface GroupRepository {
 
     List<Group> findByTeacherId(Long teacherId);
 
+
     Group findById(Long id);
 }
 

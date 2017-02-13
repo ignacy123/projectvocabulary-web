@@ -4,9 +4,12 @@ import com.github.ignacy123.projectvocabulary.web.domain.Group;
 import com.github.ignacy123.projectvocabulary.web.domain.Invitation;
 import com.github.ignacy123.projectvocabulary.web.dto.InvitationAcceptanceDto;
 import com.github.ignacy123.projectvocabulary.web.dto.InvitationDto;
+import com.github.ignacy123.projectvocabulary.web.repository.GroupRepository;
 import com.github.ignacy123.projectvocabulary.web.repository.GroupRepositoryTwo;
 import com.github.ignacy123.projectvocabulary.web.repository.InvitationRepositoryTwo;
+import com.github.ignacy123.projectvocabulary.web.security.UserDetailsHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,13 +19,13 @@ import java.util.List;
  */
 @Service
 public class GroupServiceImpl implements GroupService {
-    private final GroupRepositoryTwo repository;
+    private final GroupRepository repository;
     private final InvitationRepositoryTwo invitationRepository;
-    private Invitation invitation;
-    private Group group;
+
+
 
     @Autowired
-    public GroupServiceImpl(GroupRepositoryTwo repository, InvitationRepositoryTwo invitationRepository) {
+    public GroupServiceImpl(GroupRepository repository, InvitationRepositoryTwo invitationRepository) {
         this.repository = repository;
         this.invitationRepository = invitationRepository;
     }
@@ -48,20 +51,27 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void acceptInvitation(InvitationAcceptanceDto acceptanceDto) {
-        if(invitationRepository.findByUid(acceptanceDto.getInvitationUid()) != null) {
-            invitation = invitationRepository.findByUid(acceptanceDto.getInvitationUid());
-        }else{
+        Invitation invitation = invitationRepository.findByUid(acceptanceDto.getInvitationUid());
+        if(invitation == null) {
             throw new WrongInvitationException();
         }
         Long groupId = invitation.getGroupId();
-        if(repository.findById(groupId) != null){
-            group = repository.findById(groupId);
-        }else{
+        Group group = repository.findById(groupId);
+        if(group == null){
             throw new WrongInvitationException();
         }
         group.getStudentIds().add(acceptanceDto.getStudentId());
-        repository.persist();
         invitationRepository.delete(invitation.getUid());
+    }
+
+    @Override
+    public Group getGroup(Long groupId) {
+        Group group = repository.findById(groupId);
+        Long teacherId = UserDetailsHolder.getUser().getId();
+        if(group == null || !group.getTeacherId().equals(teacherId)){
+            throw new SecurityException("no such group");
+        }
+        return group;
     }
 
 }

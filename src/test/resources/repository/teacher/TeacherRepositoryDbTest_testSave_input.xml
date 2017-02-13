@@ -1,5 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <dataset>
-    <teacher id="1" user_id="1"/>
-    <teacher id="2" user_id="2"/>
+    <user id="1" email="a@a.com" password="haslo" first_name="a" last_name="a"/>
+    <user id="2" email="b@b.com" password="haslo" first_name="b" last_name="b"/>
+    <user id="3" email="c@c.com" password="haslo" first_name="c" last_name="c"/>
+    <teacher id = "1" user_id="1"/>
+    <teacher id = "2" user_id="2"/>
 </dataset>
