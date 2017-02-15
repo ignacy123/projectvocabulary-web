@@ -5,11 +5,9 @@ import com.github.ignacy123.projectvocabulary.web.domain.Invitation;
 import com.github.ignacy123.projectvocabulary.web.dto.InvitationAcceptanceDto;
 import com.github.ignacy123.projectvocabulary.web.dto.InvitationDto;
 import com.github.ignacy123.projectvocabulary.web.repository.GroupRepository;
-import com.github.ignacy123.projectvocabulary.web.repository.GroupRepositoryTwo;
-import com.github.ignacy123.projectvocabulary.web.repository.InvitationRepositoryTwo;
+import com.github.ignacy123.projectvocabulary.web.repository.InvitationRepository;
 import com.github.ignacy123.projectvocabulary.web.security.UserDetailsHolder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,12 +18,12 @@ import java.util.List;
 @Service
 public class GroupServiceImpl implements GroupService {
     private final GroupRepository repository;
-    private final InvitationRepositoryTwo invitationRepository;
+    private final InvitationRepository invitationRepository;
 
 
 
     @Autowired
-    public GroupServiceImpl(GroupRepository repository, InvitationRepositoryTwo invitationRepository) {
+    public GroupServiceImpl(GroupRepository repository, InvitationRepository invitationRepository) {
         this.repository = repository;
         this.invitationRepository = invitationRepository;
     }
