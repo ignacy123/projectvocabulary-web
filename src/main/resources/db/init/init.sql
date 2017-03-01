@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 11, 2017 at 01:19 PM
--- Server version: 5.7.16-0ubuntu0.16.04.1
+-- Generation Time: Mar 01, 2017 at 03:58 PM
+-- Server version: 5.7.17-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -32,6 +32,13 @@ CREATE TABLE `groups` (
   `name` char(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `groups`
+--
+
+INSERT INTO `groups` (`Id`, `teacher_id`, `name`) VALUES
+(2, 19, 'test group');
+
 -- --------------------------------------------------------
 
 --
@@ -45,6 +52,13 @@ CREATE TABLE `invitation` (
   `studentName` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `invitation`
+--
+
+INSERT INTO `invitation` (`uid`, `email`, `groupId`, `studentName`) VALUES
+('1a9a1373-6d69-4d5e-8986-100941e7e6f0', 'projectvocabulary@onet.pl', 2, 'janusz');
+
 -- --------------------------------------------------------
 
 --
@@ -55,6 +69,13 @@ CREATE TABLE `roles` (
   `user_id` int(10) UNSIGNED NOT NULL,
   `role` varchar(60) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`user_id`, `role`) VALUES
+(19, 'TEACHER');
 
 -- --------------------------------------------------------
 
@@ -96,6 +117,13 @@ CREATE TABLE `student_group` (
   `group_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `student_group`
+--
+
+INSERT INTO `student_group` (`student_id`, `group_id`) VALUES
+(22, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -126,8 +154,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`) VALUES
-(7, '', '', '', ''),
-(8, 'email@example.com', '$2a$10$Zvvc.9fXqZnnNRp7UIldb.2u2a.xJ2JnpM5IXSREYI5exWXc1fixW', 'Janusz', 'Kowalski');
+(19, 'janusz@example6.com', '$2a$10$wD6XHUrglbetKWqcj97JqebbcWTT5XIcYOlHuypffi4Rn3YheG.Cu', 'janusz', 'kowalski'),
+(22, 'projectvocabulary@onet.pl', '$2a$10$Ux8czoy/UKNoy8tD.CmWhOesNAf7kOzDOj/fEswSYkd17OdVv2Sou', 'janusz', 'kowalski');
 
 --
 -- Indexes for dumped tables
@@ -197,7 +225,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `Id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `student`
 --
@@ -212,7 +240,7 @@ ALTER TABLE `teacher`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- Constraints for dumped tables
 --
@@ -240,7 +268,8 @@ ALTER TABLE `student`
 -- Constraints for table `student_group`
 --
 ALTER TABLE `student_group`
-  ADD CONSTRAINT `student_group_group` FOREIGN KEY (`group_id`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `student_group_group` FOREIGN KEY (`group_id`) REFERENCES `groups` (`Id`),
+  ADD CONSTRAINT `student_group_user` FOREIGN KEY (`student_id`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `teacher`
