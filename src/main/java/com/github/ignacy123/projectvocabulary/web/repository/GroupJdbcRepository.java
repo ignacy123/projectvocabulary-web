@@ -69,4 +69,15 @@ public class GroupJdbcRepository implements GroupRepository {
         Group group = jdbcTemplate.queryForObject("SELECT * FROM `groups` s WHERE s.id=:id", params, GROUP_ROW_MAPPER);
         return group;
     }
+
+    @Override
+    public void addToGroup(Long studentId, Long groupId) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("student_id", studentId);
+        params.addValue("group_id", groupId);
+        final String INSERT_SQL =
+                "insert into `student_group` (student_id, group_id) " + "values (:student_id, :group_id)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(INSERT_SQL, params, keyHolder);
+    }
 }

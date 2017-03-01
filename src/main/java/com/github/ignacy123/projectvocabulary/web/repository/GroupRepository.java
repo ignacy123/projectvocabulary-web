@@ -16,5 +16,7 @@ public interface GroupRepository {
 
 
     Group findById(Long id);
+
+    void addToGroup(Long studentId, Long groupId);
 }
 

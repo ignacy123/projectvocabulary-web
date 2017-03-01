@@ -1,5 +1,6 @@
 package com.github.ignacy123.projectvocabulary.web.controller;
 
+import com.github.ignacy123.projectvocabulary.web.dto.RegistrationWithUidDto;
 import com.github.ignacy123.projectvocabulary.web.domain.User;
 import com.github.ignacy123.projectvocabulary.web.dto.*;
 import com.github.ignacy123.projectvocabulary.web.repository.NotUniqueEmailException;
@@ -8,8 +9,6 @@ import com.github.ignacy123.projectvocabulary.web.service.WrongCredentialsExcept
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -34,8 +33,8 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/registerWithUid")
     @ResponseBody
-    public User registerWithUid(@RequestBody @Valid RegistrationDto dto, String uid) {
-        return userService.registerWithUid(dto, uid);
+    public User registerWithUid(@RequestBody @Valid RegistrationWithUidDto dto) {
+        return userService.registerWithUid(dto);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/login")

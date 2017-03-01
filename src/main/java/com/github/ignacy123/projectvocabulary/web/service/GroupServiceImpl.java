@@ -120,7 +120,7 @@ public class GroupServiceImpl implements GroupService {
         if(group == null){
             throw new WrongInvitationException();
         }
-        group.getStudentIds().add(acceptanceDto.getStudentId());
+        repository.addToGroup(acceptanceDto.getStudentId(), groupId);
         invitationRepository.delete(invitation.getUid());
     }
 

@@ -2,6 +2,7 @@ package com.github.ignacy123.projectvocabulary.web.service;
 
 import com.github.ignacy123.projectvocabulary.web.domain.User;
 import com.github.ignacy123.projectvocabulary.web.dto.RegistrationDto;
+import com.github.ignacy123.projectvocabulary.web.dto.RegistrationWithUidDto;
 import com.github.ignacy123.projectvocabulary.web.dto.UserUpdateDto;
 import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,5 +21,6 @@ public interface UserService {
     @PreAuthorize("principal.id==#id")
     User updateUser(Long id, UserUpdateDto updateDto);
 
-    User registerWithUid(RegistrationDto dto, String uid);
+    User registerWithUid(RegistrationWithUidDto dto);
+
 }

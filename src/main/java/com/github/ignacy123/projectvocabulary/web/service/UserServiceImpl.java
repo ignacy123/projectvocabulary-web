@@ -2,10 +2,7 @@ package com.github.ignacy123.projectvocabulary.web.service;
 
 import com.github.ignacy123.projectvocabulary.web.domain.Role;
 import com.github.ignacy123.projectvocabulary.web.domain.User;
-import com.github.ignacy123.projectvocabulary.web.dto.InvitationAcceptanceDto;
-import com.github.ignacy123.projectvocabulary.web.dto.RegistrationDto;
-import com.github.ignacy123.projectvocabulary.web.dto.UserNotFoundException;
-import com.github.ignacy123.projectvocabulary.web.dto.UserUpdateDto;
+import com.github.ignacy123.projectvocabulary.web.dto.*;
 import com.github.ignacy123.projectvocabulary.web.repository.GroupRepository;
 import com.github.ignacy123.projectvocabulary.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,11 +72,11 @@ public class UserServiceImpl implements UserService {
 	}
 
     @Override
-    public User registerWithUid(RegistrationDto dto, String uid) {
+    public User registerWithUid(RegistrationWithUidDto dto) {
         User user = register(dto);
 		InvitationAcceptanceDto invDto = new InvitationAcceptanceDto();
 		invDto.setStudentId(user.getId());
-		invDto.setInvitationUid(uid);
+		invDto.setInvitationUid(dto.getUid());
 		service.acceptInvitation(invDto);
 		return user;
     }
