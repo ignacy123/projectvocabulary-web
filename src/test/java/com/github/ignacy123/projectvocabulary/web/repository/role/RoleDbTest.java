@@ -28,7 +28,7 @@ public class RoleDbTest extends BaseDBUnitTest {
 	@Test
 	@DatabaseSetup(value = "classpath:repository/role/RoleDbTest_givesRole_input.xml")
 	public void givesRoles() {
-		Set<Role> roles = repository.getRoles(1L);
+		Set<Role> roles = repository.getRoles(4L);
 
 		assertTrue(roles.contains(Role.TEACHER));
 	}
@@ -36,7 +36,7 @@ public class RoleDbTest extends BaseDBUnitTest {
 	@Test
 	@DatabaseSetup(value = "classpath:repository/role/RoleDbTest_givesMultipleRoles_input.xml")
 	public void givesMultipleRoles() {
-		Set<Role> roles = repository.getRoles(1L);
+		Set<Role> roles = repository.getRoles(4L);
 
 		// the order is not sure
 		assertTrue(roles.contains(Role.STUDENT));

@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <dataset>
-    <roles user_id="1" role="TEACHER"/>
-    <roles user_id="1" role="STUDENT"/>
+    <user id="4" email="d" first_name="a" last_name="a" password="c"/>
+    <roles user_id="4" role="TEACHER"/>
+    <roles user_id="4" role="STUDENT"/>
 </dataset>

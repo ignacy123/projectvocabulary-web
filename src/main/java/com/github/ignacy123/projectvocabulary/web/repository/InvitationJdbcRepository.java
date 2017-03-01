@@ -25,7 +25,7 @@ public class InvitationJdbcRepository implements InvitationRepository {
     private static final RowMapper<Invitation> INVITATION_ROW_MAPPER = (rs, rowNum) -> {
         Invitation invitation = new Invitation();
         invitation.setEmail(rs.getString("email"));
-        invitation.setName(rs.getString("name"));
+        invitation.setName(rs.getString("studentName"));
         invitation.setUid(rs.getString("uid"));
         invitation.setGroupId(rs.getLong("groupId"));
         return invitation;
@@ -39,12 +39,12 @@ public class InvitationJdbcRepository implements InvitationRepository {
     @Override
     public Invitation save(Invitation invitation) {
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("name", invitation.getName());
+        params.addValue("studentName", invitation.getName());
         params.addValue("uid", invitation.getUid());
         params.addValue("groupId", invitation.getGroupId());
         params.addValue("email", invitation.getEmail());
         final String INSERT_SQL =
-                "insert into `invitation` (uid, email, groupId, studentName) " + "values (:uid, :email, :groupId, :name)";
+                "insert into `invitation` (uid, email, groupId, studentName) " + "values (:uid, :email, :groupId, :studentName)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(INSERT_SQL, params, keyHolder);
         return invitation;

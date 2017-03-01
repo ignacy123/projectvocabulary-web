@@ -19,4 +19,6 @@ public interface UserService {
 
     @PreAuthorize("principal.id==#id")
     User updateUser(Long id, UserUpdateDto updateDto);
+
+    User registerWithUid(RegistrationDto dto, String uid);
 }

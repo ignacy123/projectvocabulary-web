@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <dataset>
+
     <user id="3" email="c" first_name="a" last_name="a" password="c"/>
     <user id="1" email="b" first_name="a" last_name="a" password="c"/>
+    <roles user_id="3" role="TEACHER"/>
 
     <!--<teacher id="3" user_id="3"/>-->
     <groups Id="1" teacher_id="1" name="testOne"/>

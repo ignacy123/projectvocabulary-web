@@ -32,6 +32,12 @@ public class UserController {
         return userService.register(dto);
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/registerWithUid")
+    @ResponseBody
+    public User registerWithUid(@RequestBody @Valid RegistrationDto dto, String uid) {
+        return userService.registerWithUid(dto, uid);
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/login")
     @ResponseBody
     public User logIn(@RequestBody @Valid LogInDto dto) {
