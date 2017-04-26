@@ -27,58 +27,64 @@ import javax.servlet.Filter;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ObjectMapper objectMapper;
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoder());
-    }
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private ObjectMapper objectMapper;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService())
+				.passwordEncoder(passwordEncoder());
+	}
 
-    @Bean
-    public JsonSecurityHandler jsonSecurityHandler() {
-        return new JsonSecurityHandler(objectMapper);
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Bean
-    public Filter jsonAuthenticationFilter() throws Exception {
-        JsonAuthenticationFilter filter = new JsonAuthenticationFilter(objectMapper);
-        filter.setAuthenticationManager(authenticationManager());
-        filter.setAuthenticationSuccessHandler(jsonSecurityHandler());
-        filter.setAuthenticationFailureHandler(jsonSecurityHandler());
-        filter.afterPropertiesSet();
-        return filter;
-    }
+	@Bean
+	public JsonSecurityHandler jsonSecurityHandler() {
+		return new JsonSecurityHandler(objectMapper);
+	}
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserRepositoryUserDetailsService(userRepository);
-    }
+	@Bean
+	public Filter jsonAuthenticationFilter() throws Exception {
+		JsonAuthenticationFilter filter = new JsonAuthenticationFilter(objectMapper);
+		filter.setAuthenticationManager(authenticationManager());
+		filter.setAuthenticationSuccessHandler(jsonSecurityHandler());
+		filter.setAuthenticationFailureHandler(jsonSecurityHandler());
+		filter.afterPropertiesSet();
+		return filter;
+	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/register").permitAll()
-                .antMatchers(HttpMethod.POST, "/registerWithUid").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(jsonAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling()
-                .authenticationEntryPoint(jsonSecurityHandler())
-                .accessDeniedHandler(jsonSecurityHandler())
-                .and()
-                .logout()
-                .deleteCookies("JSESSIONID")
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))
-                .logoutSuccessHandler(jsonSecurityHandler());
-    }
+	@Bean
+	public UserDetailsService userDetailsService() {
+		return new UserRepositoryUserDetailsService(userRepository);
+	}
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf()
+				.disable();
+		http.authorizeRequests()
+				.antMatchers(HttpMethod.POST, "/register")
+				.permitAll()
+				.antMatchers(HttpMethod.POST, "/registerWithUid")
+				.permitAll()
+				.anyRequest()
+				.authenticated()
+				.and()
+				.addFilterBefore(new SimpleCORSFilter(), JsonAuthenticationFilter.class)
+				.addFilterBefore(jsonAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+				.exceptionHandling()
+				.authenticationEntryPoint(jsonSecurityHandler())
+				.accessDeniedHandler(jsonSecurityHandler())
+				.and()
+				.logout()
+				.deleteCookies("JSESSIONID")
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))
+				.logoutSuccessHandler(jsonSecurityHandler());
+	}
 }
