@@ -95,10 +95,10 @@ public class GroupServiceImpl implements GroupService {
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(invitation.getEmail()));
             message.setSubject("Invitation to Project Vocabulary");
-            message.setText("Dear "+ invitation.getName()+"! \n \n"+"You've jest been invited to group'"
+            message.setText("Dear "+ invitation.getName()+"! \n \n"+"You've jest been invited to group '"
                     +repository.findById(invitation.getGroupId()).getName()
-                    +"' in Project Vocabulary. To start studying, please register via: localhost:8080/projectvocabulary/register"
-                    +"Here is your uid which you will need during the registration process: "
+                    +"' in Project Vocabulary. To start studying, please register via: localhost:8080/projectvocabulary/register. "
+                    +"Here is your UID which you will need during the registration process: "
                     +invitation.getUid()+"\n Best wishes, \n Project Vocabulary Team"
             );
 
