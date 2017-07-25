@@ -82,9 +82,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.authenticationEntryPoint(jsonSecurityHandler())
 				.accessDeniedHandler(jsonSecurityHandler())
 				.and()
+                .addFilterBefore(new SimpleCORSFilter(), JsonAuthenticationFilter.class)
 				.logout()
-				.deleteCookies("JSESSIONID")
+                .deleteCookies("JSESSIONID")
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))
 				.logoutSuccessHandler(jsonSecurityHandler());
+
 	}
 }

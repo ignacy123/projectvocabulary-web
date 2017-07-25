@@ -4,6 +4,7 @@ import com.github.ignacy123.projectvocabulary.web.domain.DictionaryFactory;
 import com.github.ignacy123.projectvocabulary.web.domain.MultiDictionary;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
 import java.io.InputStream;
 
